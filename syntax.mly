@@ -6,7 +6,7 @@
 
 %token EOL SEMICOLON COLON ASSIGN  /* lexer tokens */
 %token EQUALS MINUS LBRACKET RBRACKET
-%token VAR WHILE PROC SKIP TRUE FALSE 
+%token VAR WHILE PROC SKIP TRUE FALSE IF ELSE LESS_THAN /* reserved words */
 %token <string> IDENT
 %token <int> NUM
 %start prog                   /* the entry point */
@@ -42,12 +42,14 @@ boolean:
   | TRUE { () }
   | FALSE { () }
   | expr EQUALS expr { () }
+  | expr LESS_THAN expr { () }
 
 sequential_control:
     | SKIP {()}
     | LBRACKET declare RBRACKET { () }
     | LBRACKET cmd SEMICOLON cmd RBRACKET { () }
     | WHILE boolean cmd { () }
+    | IF boolean cmd ELSE cmd { () } 
 
 declare:
     VAR IDENT SEMICOLON cmd  { () }

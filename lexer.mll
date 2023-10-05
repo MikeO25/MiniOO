@@ -8,6 +8,8 @@ rule token = parse
   | ['\n' ]    { EOL }
   | "proc"     { PROC }
   | "while"    { WHILE }
+  | "if"       { IF }
+  | "else"     { ELSE }
   | "skip"     { SKIP }
   | "var"      { VAR }
   | "true"     { TRUE }
@@ -19,6 +21,7 @@ rule token = parse
   | ';'        { SEMICOLON }
   | ':'        { COLON     }
   | "=="       { EQUALS    }
+  | '<'        { LESS_THAN }
   | '='        { ASSIGN }
   | '-'        { MINUS }
   | '{'        { LBRACKET }
