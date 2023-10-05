@@ -14,6 +14,8 @@ rule token = parse
   | "var"      { VAR }
   | "true"     { TRUE }
   | "false"    { FALSE }
+  | "null"     { NULL }
+  | "malloc"     { MALLOC }
   | (['a'-'z'] | ['A'-'Z'])(['a'-'z'] | ['A'-'Z'] | ['0'-'9'])* as idt
                { IDENT idt }
   | ['0'-'9']+ as num

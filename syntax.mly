@@ -6,7 +6,7 @@
 
 %token EOL SEMICOLON COLON ASSIGN  /* lexer tokens */
 %token EQUALS MINUS LBRACKET RBRACKET
-%token VAR WHILE PROC SKIP TRUE FALSE IF ELSE LESS_THAN /* reserved words */
+%token VAR WHILE PROC SKIP TRUE FALSE IF ELSE LESS_THAN NULL MALLOC /* reserved words */
 %token <string> IDENT
 %token <int> NUM
 %start prog                   /* the entry point */
@@ -61,6 +61,7 @@ expr :
   | PROC IDENT COLON cmd SEMICOLON   { () } (* Recursive procedure expression *)
   | expr MINUS expr      { () }
   | IDENT                { () }
-  | NUM                  { () }  
+  | NUM                  { () } 
+  | NULL                 { () } 
 
 %% (* trailer *)

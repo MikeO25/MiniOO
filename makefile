@@ -45,6 +45,9 @@ all: delete
 	@echo "var x; x = 1; if x == 1 x = 2 else x = 3; x = 10" | ./minioo
 	
 	@echo "Test 7:"
+	@echo "var x; x = 1; var y; y = null" | ./minioo
+
+	@echo "Test 8:"
 	@echo "var a; a = proc y: y = y - 1; a = 1" | ./minioo
 	@echo "# the end."
 
