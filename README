@@ -5,10 +5,13 @@ The file "minioo" can be compiled using gmake (under tcsh)
 % ^D
 % make delete
 
+Current: Parser and Lexer for Full MiniOO
+Next (2023-10-17): Choose an OCaml type to implement the abstract syntax tree (AST), produce the abstract syntax tree of full MiniOO during parsing, pretty print the abstract syntax tree, and check the correctness of your parser on MiniOO examples.
+
 TODO:
-- add Malloc to grammer
+- add Malloc to grammar
 - fix proc 
-- add atom to lexer and grammer 
-- add parallelism to lexer and grammer
-- add field to lexer and grammer
-- add recursive call to lexer and grammer
+- add atom to lexer and grammar 
+- add parallelism to lexer and grammar
+- add field to lexer and grammar
+- add recursive call to lexer and grammar
