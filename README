@@ -4,3 +4,11 @@ The file "minioo" can be compiled using gmake (under tcsh)
 % make
 % ^D
 % make delete
+
+TODO:
+- add Malloc to grammer
+- fix proc 
+- add atom to lexer and grammer 
+- add parallelism to lexer and grammer
+- add field to lexer and grammer
+- add recursive call to lexer and grammer
