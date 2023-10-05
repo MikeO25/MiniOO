@@ -14,24 +14,19 @@
 /* the header is copied in calculatorMENHIR.ml but
 not is calculatorMENHIR.mli where typeProg must be
 qualified by the module where the type is declared */
-%type <unit> cmds
 %type <unit> cmd
 %type <unit> boolean
 %type <unit> assign
 %type <unit> declare
 %type <unit> sequential_control
 %type <unit> expr
-%left MINUS          /* lowest precedence  */
+%left MINUS /* lowest precedence  */
 
 %% /* rules */
 
 prog :
-    cmds EOL  { print_endline "Success!"; () }
+    cmd EOL  { print_endline "Success!"; () }
 	
-cmds :
-  | cmd SEMICOLON cmds   { () }
-  | cmd                  { () }
-  
 cmd :
   | declare { () }
   | assign  { () }
@@ -58,7 +53,7 @@ assign:
     IDENT ASSIGN expr  { () }
 	
 expr :
-  | PROC IDENT COLON cmd SEMICOLON   { () } (* Recursive procedure expression *)
+  | PROC IDENT COLON cmd  { () } (* Recursive procedure expression *)
   | expr MINUS expr      { () }
   | IDENT                { () }
   | NUM                  { () } 

@@ -1,4 +1,5 @@
 (* File minioo.ml *)
+(* declare file and pass it in *)
 open Parsing;;
 try
   let lexbuf = Lexing.from_channel stdin in
