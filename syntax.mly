@@ -6,7 +6,7 @@
 
 %token EOL SEMICOLON COLON ASSIGN  /* lexer tokens */
 %token EQUALS MINUS LBRACKET RBRACKET
-%token VAR PROC SKIP TRUE FALSE 
+%token VAR WHILE PROC SKIP TRUE FALSE 
 %token <string> IDENT
 %token <int> NUM
 %start prog                   /* the entry point */
@@ -16,6 +16,7 @@ not is calculatorMENHIR.mli where typeProg must be
 qualified by the module where the type is declared */
 %type <unit> cmds
 %type <unit> cmd
+%type <unit> boolean
 %type <unit> assign
 %type <unit> declare
 %type <unit> sequential_control
@@ -43,9 +44,10 @@ boolean:
   | expr EQUALS expr { () }
 
 sequential_control:
-    | LBRACKET declare RBRACKET { () }
-    | LBRACKET cmd SEMICOLON cmd RBRACKET { () }  
     | SKIP {()}
+    | LBRACKET declare RBRACKET { () }
+    | LBRACKET cmd SEMICOLON cmd RBRACKET { () }
+    | WHILE boolean cmd { () }
 
 declare:
     VAR IDENT SEMICOLON cmd  { () }

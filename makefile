@@ -28,14 +28,21 @@ all: delete
 	@echo "# using MiniOO"
 	@echo "Test 1:"
 	@echo "var x; x = 1; var y; y = 1" | ./minioo
+	
 	@echo "Test 2:"
 	@echo "var x; {var y; {var z; z = x - 1 }}; y = z - 1" | ./minioo
+	
 	@echo "Test 3:"
 	@echo "var x; var y; var z; z = 1 - y - z - x" | ./minioo
+	
 	@echo "Test 4:"
 	@echo "var z; skip; var z; z = 1 - z" | ./minioo
+	
 	@echo "Test 5:"
 	@echo "var a; a = proc y: y = y - 1;" | ./minioo
+	
+	@echo "Test 6:"
+	@echo "var a; a = proc y: y = y - 1; a = 1" | ./minioo
 	@echo "# the end."
 
 delete:

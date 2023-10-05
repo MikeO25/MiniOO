@@ -7,6 +7,7 @@ rule token = parse
     [' ' '\t'] { token lexbuf } (* skip blanks and tabs *)
   | ['\n' ]    { EOL }
   | "proc"     { PROC }
+  | "while"    { WHILE }
   | "skip"     { SKIP }
   | "var"      { VAR }
   | "true"     { TRUE }
