@@ -11,9 +11,7 @@
 %token <int> NUM
 %start prog                   /* the entry point */
 %type <unit> prog  
-/* the header is copied in calculatorMENHIR.ml but
-not is calculatorMENHIR.mli where typeProg must be
-qualified by the module where the type is declared */
+
 %type <unit> cmd
 %type <unit> boolean
 %type <unit> assign
