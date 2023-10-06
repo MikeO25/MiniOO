@@ -18,3 +18,4 @@ TODO:
 - add parallelism to lexer and grammar
 - add field to lexer and grammar
 - add recursive call to lexer and grammar
+- get rid of cmds, 
