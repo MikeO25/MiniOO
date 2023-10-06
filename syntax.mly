@@ -41,7 +41,6 @@ boolean:
 
 sequential_control:
     | SKIP {()}
-    | LBRACKET declare RBRACKET { () }
     | LBRACKET cmd SEMICOLON cmd RBRACKET { () }
     | WHILE boolean cmd { () }
     | IF boolean cmd ELSE cmd { () } 

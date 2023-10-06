@@ -30,10 +30,10 @@ all: delete
 	@echo "{var x; x = 1; var y; y = 1}" | ./minioo
 	
 	@echo "Test 2:"
-	@echo "{var x; {var y; {var z; z = x - 1 }}; y = z - 1}" | ./minioo
+	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; z = 1}; y = z - 1}" | ./minioo
 
 	@echo "Test 2': (correct later)"
-	@echo "{var x; {var y; {var z; z = x - 1 }}; y = z - 1}" | ./minioo
+	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; y = 1}; y = z - 1}" | ./minioo
 	
 	@echo "Test 3:"
 	@echo "var x; var y; var z; z = 1 - y - z - x" | ./minioo
@@ -56,10 +56,10 @@ all: delete
 	@echo "Test 9:"
 	@echo "1-1(1-1)" | ./minioo
 
-	@echo "Test 9:"
+	@echo "Test 10:"
 	@echo "x.5" | ./minioo
 
 	@echo "# the end."
 
 delete:
-	/bin/rm -f minioo *.cmi *.cmo lexer.cmi lexer.cmo lexer.ml syntax.cmi syntax.cmo syntax.ml syntax.mli makefile~
+	/bin/rm -f minioo *.cmi *.cmo lexer.cmi lexer.cmo lexer.ml syntax.cmi syntax.cmo syntax.ml syntax.mli syntax.conflicts makefile~
