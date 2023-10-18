@@ -15,7 +15,10 @@ rule token = parse
   | "true"     { TRUE }
   | "false"    { FALSE }
   | "null"     { NULL }
-  | "malloc"     { MALLOC }
+  | "malloc"   { MALLOC }
+  | "atom"     { ATOM }
+  | "@"        { AT }
+  | "."        { DOT }
   | (['a'-'z'] | ['A'-'Z'])(['a'-'z'] | ['A'-'Z'] | ['0'-'9'])* as idt
                { IDENT idt }
   | ['0'-'9']+ as num
@@ -28,6 +31,10 @@ rule token = parse
   | '-'        { MINUS }
   | '{'        { LBRACKET }
   | '}'        { RBRACKET }
+  | '('        { LPAREN   }
+  | ')'        { RPAREN   }
+  | "|||"      { THREE_BARS }
+  | '('        { LPAREN   }
   | eof        { raise Eof }
   | _ as c { failwith (Printf.sprintf "unexpected character: %C" c)}
 

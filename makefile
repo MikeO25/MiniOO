@@ -54,10 +54,25 @@ all: delete
 	@echo "var a; {a = proc y: y = y - 1; a = 1}" | ./minioo
 
 	@echo "Test 9:"
-	@echo "1-1(1-1)" | ./minioo
+	@echo "var x; if true x = 1 else x = 3" | ./minioo
 
 	@echo "Test 10:"
-	@echo "x.5" | ./minioo
+	@echo "var x; x.@p = 1" | ./minioo
+
+	@echo "Test 11:"
+	@echo "var a; {a = proc y: y = y - 1; a(5)}" | ./minioo
+
+	@echo "Test 12:"
+	@echo "1-1(1-1)" | ./minioo
+
+	@echo "Test 13:"
+	@echo "var x; {x = 1 ||| {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
+
+	@echo "Test 14:"
+	@echo "var x; {atom(x = 1) ||| {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
+
+	@echo "Test 15:"
+	@echo "var x; malloc(x)" | ./minioo
 
 	@echo "# the end."
 
