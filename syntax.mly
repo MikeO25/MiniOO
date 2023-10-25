@@ -1,7 +1,9 @@
 /* File syntax.mly */
 
 %{ (* header *)
-  
+
+open Ast
+
 %} /* declarations */
 
 %token EOL SEMICOLON COLON ASSIGN  /* lexer tokens */
@@ -13,73 +15,106 @@
 %start prog                   /* the entry point */
 %type <unit> prog  
 
-%type <unit> cmd
-%type <unit> boolean
-%type <unit> assign
-%type <unit> declare
-%type <unit> sequential_control
-%type <unit> expr
-%type <unit> field
-%type <unit> field_assignment
-%type <unit> recursive_procedure_call
-%type <unit> parallelism
-%type <unit> dynamic_object_allocation
+%type <Ast.ast> cmd
+%type <Ast.ast> boolean
+%type <Ast.ast> assign
+%type <Ast.ast> declare
+%type <Ast.ast> sequential_control
+%type <Ast.ast> expr
+%type <Ast.ast> field
+%type <Ast.ast> field_assignment
+%type <Ast.ast> recursive_procedure_call
+%type <Ast.ast> parallelism
+%type <Ast.ast> dynamic_object_allocation
 %left MINUS /* lowest precedence  */
 
 %% /* rules */
 
 prog :
-    cmd EOL  { print_endline "Success!"; () }
-	
+    cmd EOL  { print_endline "Success!"; ()}
+
+(* command *)
 cmd :
-  | declare { () }
-  | assign  { () }
-  | sequential_control { () }
-  | field_assignment { () }
-  | recursive_procedure_call { () }
-  | parallelism  { () }
-  | dynamic_object_allocation { () }
+  | c=declare { c }
+  | c=assign  { c }
+  | c=sequential_control { c }
+  | c=field_assignment { c }
+  | c=recursive_procedure_call { c }
+  | c=parallelism  { c }
+  | c=dynamic_object_allocation { c }
 
+(* boolean *)
 boolean:
-  | TRUE { () }
-  | FALSE { () }
-  | expr EQUALS expr { () }
-  | expr LESS_THAN expr { () }
+  | TRUE {Node({label=Boolean}, [])}
+  | FALSE {Node({label=Boolean}, [])}
+  | e1=expr EQUALS e2=expr { Node({label=Boolean}, [e1; e2]) }
+  | e1=expr LESS_THAN e2=expr { Node({label=Boolean}, [e1; e2]) }
 
+(* command *)
 sequential_control:
-    | SKIP {()}
-    | LBRACKET cmd SEMICOLON cmd RBRACKET { () }
-    | WHILE boolean cmd { () }
-    | IF boolean cmd ELSE cmd { () } 
+    | SKIP {
+                Node({label=Command}, [])
+           }
+    
+    | LBRACKET c1=cmd SEMICOLON c2=cmd RBRACKET 
+           {
+                Node({label=Command}, [c1; c2])
+            }
+    
+    | WHILE b=boolean c=cmd 
+        {Node({label=Command}, [b; c])}
+    
+    | IF b=boolean c1=cmd ELSE c2=cmd {Node({label=Command}, [b; c1; c2])} 
 
+(* command *)
 parallelism:
-    | LBRACKET cmd THREE_BARS cmd RBRACKET { () }
-    | ATOM LPAREN cmd RPAREN               { () }
+    | LBRACKET c1=cmd THREE_BARS c2=cmd RBRACKET 
+        {Node({label=Command}, [c1; c2])}
+    
+    | ATOM LPAREN c=cmd RPAREN               
+        {Node({label=Command}, [c])}
 
+(* command *)
 dynamic_object_allocation:
-    MALLOC LPAREN IDENT RPAREN             { () }
+    MALLOC LPAREN IDENT RPAREN             {Node({label=Command}, [])}
 
+(* command *)
 recursive_procedure_call:
-    expr LPAREN expr RPAREN { () }
+    e1=expr LPAREN e2=expr RPAREN {Node({label=Command}, [e1; e2])}
 
+(* command *)
 declare:
-    VAR IDENT SEMICOLON cmd  { () }
+    VAR IDENT SEMICOLON c=cmd  {Node({label=Command},[c])}
 
+(* command *)
 assign:
-    IDENT ASSIGN expr  { () }
+    IDENT ASSIGN e=expr  
+        {Node({label=Command}, [e]) }
 	
 field:
-    AT IDENT { () }
+    AT IDENT {Node({label=Expression}, [])}
 
+(* command *)
 field_assignment:
-    expr DOT expr ASSIGN expr { () }
+    e1=expr DOT e2=expr ASSIGN e3=expr 
+        {Node({label=Command}, [e1; e2; e3]) }
 
 expr :
-  | field                 { () }
-  | PROC IDENT COLON cmd  { () } (* Recursive procedure expression *)
-  | expr MINUS expr      { () }
-  | IDENT                { () }
-  | NUM                  { () } 
-  | NULL                 { () } 
+  | f=field {f}
+  
+  | PROC IDENT COLON c=cmd  
+        { Node({label=Expression}, [c]) } (* Recursive procedure expression *)
+  
+  | e1=expr MINUS e2=expr      
+    { Node({label=Expression}, [e1; e2])}
+
+  | IDENT                
+    {Node({label=Expression}, [])}
+
+  | NUM                  
+    {Node({label=Expression}, [])}
+
+  | NULL                 
+    {Node({label=Expression}, [])} 
 
 %% (* trailer *)

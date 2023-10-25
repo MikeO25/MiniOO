@@ -3,6 +3,11 @@ all: delete
 	@echo "# Type declarations:"
 	cat miniooDeclarations.ml
 	ocamlc -c miniooDeclarations.ml
+
+	@echo "#Abstract Syntax Tree:"
+	cat ast.ml
+	ocamlc -c ast.ml
+
 	@echo "# Lexer specification:"
 	cat lexer.mll
 	ocamllex lexer.mll
@@ -23,7 +28,7 @@ all: delete
 	@echo "# compilation of the MiniOO"
 	ocamlc -c minioo.ml
 	@echo "# linking of the lexer, parser & MiniOO"
-	ocamlc -o minioo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
+	ocamlc -o minioo ast.cmo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
 	ls
 	@echo "# using MiniOO"
 	@echo "Test 1:"
