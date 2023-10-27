@@ -1,16 +1,32 @@
-type nodeType =  Boolean | Command | Expression;;
+type expr = 
+	| Minus of expr * expr
+	| Ident of string
+	| Num of int
+	| Null
+	| Field of string
+	| ProcedureExpression of string * cmd 
 
-type node = {
-	label: nodeType
-}
+and boolean =
+	| Bool of bool
+	| Equals of expr * expr
+	| LessThan of expr * expr
 
-type ast = Empty | Node of node * ast list;;
+and cmd = 
+	| Skip
+	| Sequence of cmd * cmd
+	| While of boolean * cmd
+	| If of boolean * cmd * cmd 
+	| Parallel of cmd * cmd
+	| Atom of cmd 
+	| Malloc of string
+	| ProcedureCall of expr * expr
+	| Declare of string * cmd 
+	| Assign of string * expr
+	| FieldAssign of expr * expr * expr
 
 
-let a = {label=Command};;
-let b = {label=Boolean};;
-let c = {label=Expression};;
 
-let t = Node(a, [Node(b, [Empty]); Node(c, [Empty])]);
+
+
 
 

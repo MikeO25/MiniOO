@@ -15,17 +15,17 @@ open Ast
 %start prog                   /* the entry point */
 %type <unit> prog  
 
-%type <Ast.ast> cmd
-%type <Ast.ast> boolean
-%type <Ast.ast> assign
-%type <Ast.ast> declare
-%type <Ast.ast> sequential_control
-%type <Ast.ast> expr
-%type <Ast.ast> field
-%type <Ast.ast> field_assignment
-%type <Ast.ast> recursive_procedure_call
-%type <Ast.ast> parallelism
-%type <Ast.ast> dynamic_object_allocation
+%type <Ast.cmd> cmd
+%type <Ast.boolean> boolean
+%type <Ast.cmd> assign
+%type <Ast.cmd> declare
+%type <Ast.cmd> sequential_control
+%type <Ast.expr> expr
+%type <Ast.expr> field
+%type <Ast.cmd> field_assignment
+%type <Ast.cmd> recursive_procedure_call
+%type <Ast.cmd> parallelism
+%type <Ast.cmd> dynamic_object_allocation
 %left MINUS /* lowest precedence  */
 
 %% /* rules */
@@ -45,76 +45,70 @@ cmd :
 
 (* boolean *)
 boolean:
-  | TRUE {Node({label=Boolean}, [])}
-  | FALSE {Node({label=Boolean}, [])}
-  | e1=expr EQUALS e2=expr { Node({label=Boolean}, [e1; e2]) }
-  | e1=expr LESS_THAN e2=expr { Node({label=Boolean}, [e1; e2]) }
+  | TRUE {Bool(true)}
+  | FALSE {Bool(false)}
+  | e1=expr EQUALS e2=expr {Equals(e1, e2)}
+  | e1=expr LESS_THAN e2=expr {LessThan(e1, e2)}
 
 (* command *)
 sequential_control:
-    | SKIP {
-                Node({label=Command}, [])
-           }
+    | SKIP {Skip}
     
     | LBRACKET c1=cmd SEMICOLON c2=cmd RBRACKET 
-           {
-                Node({label=Command}, [c1; c2])
-            }
+           {Sequence(c1, c2)}
     
     | WHILE b=boolean c=cmd 
-        {Node({label=Command}, [b; c])}
+        {While(b, c)}
     
-    | IF b=boolean c1=cmd ELSE c2=cmd {Node({label=Command}, [b; c1; c2])} 
+    | IF b=boolean c1=cmd ELSE c2=cmd 
+        {If(b, c1, c2)} 
 
 (* command *)
 parallelism:
     | LBRACKET c1=cmd THREE_BARS c2=cmd RBRACKET 
-        {Node({label=Command}, [c1; c2])}
+        {Parallel(c1, c2)}
     
     | ATOM LPAREN c=cmd RPAREN               
-        {Node({label=Command}, [c])}
+        {Atom(c)}
 
 (* command *)
 dynamic_object_allocation:
-    MALLOC LPAREN IDENT RPAREN             {Node({label=Command}, [])}
+    MALLOC LPAREN i=IDENT RPAREN             {Malloc(i)}
 
 (* command *)
 recursive_procedure_call:
-    e1=expr LPAREN e2=expr RPAREN {Node({label=Command}, [e1; e2])}
+    e1=expr LPAREN e2=expr RPAREN 
+    {ProcedureCall(e1, e2)}
 
 (* command *)
 declare:
-    VAR IDENT SEMICOLON c=cmd  {Node({label=Command},[c])}
+    VAR i=IDENT SEMICOLON c=cmd  
+        {Declare(i, c)}
 
 (* command *)
 assign:
-    IDENT ASSIGN e=expr  
-        {Node({label=Command}, [e]) }
+    i=IDENT ASSIGN e=expr  {Assign(i, e)}
 	
 field:
-    AT IDENT {Node({label=Expression}, [])}
+    AT i=IDENT {Field(i)}
 
 (* command *)
 field_assignment:
     e1=expr DOT e2=expr ASSIGN e3=expr 
-        {Node({label=Command}, [e1; e2; e3]) }
+        {FieldAssign(e1, e2, e3)}
 
 expr :
   | f=field {f}
   
-  | PROC IDENT COLON c=cmd  
-        { Node({label=Expression}, [c]) } (* Recursive procedure expression *)
+  | PROC i=IDENT COLON c=cmd  
+        {ProcedureExpression(i, c)} (* Recursive procedure expression *)
   
-  | e1=expr MINUS e2=expr      
-    { Node({label=Expression}, [e1; e2])}
+  | e1=expr MINUS e2=expr {Minus(e1, e2)}
 
-  | IDENT                
-    {Node({label=Expression}, [])}
+  | i=IDENT {Ident(i)}
 
-  | NUM                  
-    {Node({label=Expression}, [])}
+  | n=NUM {Num(n)}
 
-  | NULL                 
-    {Node({label=Expression}, [])} 
+  | NULL  {Null} 
 
 %% (* trailer *)
