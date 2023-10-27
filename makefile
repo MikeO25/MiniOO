@@ -83,8 +83,14 @@ all: delete
 	@echo "Test 15:"
 	@echo "var x; malloc(x)" | ./minioo
 
-	@echo "Test 15:"
+	@echo "Test 16:"
 	@echo "var x; y = 1" | ./minioo
+
+	@echo "Test 17:"
+	@echo "var x;{x = 1; var y; x = a - 1}" | ./minioo
+
+	@echo "Test 18:"
+	@echo "var x; malloc(y)" | ./minioo
 
 	@echo "# the end."
 
