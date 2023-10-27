@@ -1,4 +1,7 @@
-The file "minioo" can be compiled using gmake (under tcsh)
+# To Compile MiniOO
+`make`
+
+
 % make delete
 % script -q -r -k
 % make

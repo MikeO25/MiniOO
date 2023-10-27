@@ -24,7 +24,7 @@ and cmd =
 	| Assign of string * expr
 	| FieldAssign of expr * expr * expr
 
-
+type node = Expr of expr | Bool of boolean | Cmd of cmd;;
 
 
 
