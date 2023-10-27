@@ -34,7 +34,6 @@ rule token = parse
   | '('        { LPAREN   }
   | ')'        { RPAREN   }
   | "|||"      { THREE_BARS }
-  | '('        { LPAREN   }
   | eof        { raise Eof }
   | _ as c { failwith (Printf.sprintf "unexpected character: %C" c)}
 
