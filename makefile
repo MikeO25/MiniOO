@@ -8,6 +8,10 @@ all: delete
 	cat ast.ml
 	ocamlc -c ast.ml
 
+	@echo "#Static Checker:"
+	cat check.ml
+	ocamlc -c check.ml
+
 	@echo "# Lexer specification:"
 	cat lexer.mll
 	ocamllex lexer.mll
@@ -28,7 +32,7 @@ all: delete
 	@echo "# compilation of the MiniOO"
 	ocamlc -c minioo.ml
 	@echo "# linking of the lexer, parser & MiniOO"
-	ocamlc -o minioo ast.cmo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
+	ocamlc -o minioo ast.cmo check.cmo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
 	ls
 	@echo "# using MiniOO"
 	@echo "Test 1:"
@@ -78,6 +82,9 @@ all: delete
 
 	@echo "Test 15:"
 	@echo "var x; malloc(x)" | ./minioo
+
+	@echo "Test 15:"
+	@echo "var x; y = 1" | ./minioo
 
 	@echo "# the end."
 

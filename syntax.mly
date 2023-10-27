@@ -3,6 +3,8 @@
 %{ (* header *)
 
 open Ast
+open Check
+
 
 %} /* declarations */
 
@@ -31,7 +33,12 @@ open Ast
 %% /* rules */
 
 prog :
-    cmd EOL  { print_endline "Success!"; ()}
+    c=cmd EOL  {
+                if (check_cmd [] c) 
+                then print_endline "Success!" 
+                else print_endline "Static check failed."; 
+                ()
+            }
 
 (* command *)
 cmd :
@@ -45,8 +52,8 @@ cmd :
 
 (* boolean *)
 boolean:
-  | TRUE {Bool(true)}
-  | FALSE {Bool(false)}
+  | TRUE {BoolValue(true)}
+  | FALSE {BoolValue(false)}
   | e1=expr EQUALS e2=expr {Equals(e1, e2)}
   | e1=expr LESS_THAN e2=expr {LessThan(e1, e2)}
 

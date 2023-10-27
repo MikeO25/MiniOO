@@ -7,7 +7,7 @@ type expr =
 	| ProcedureExpression of string * cmd 
 
 and boolean =
-	| Bool of bool
+	| BoolValue of bool
 	| Equals of expr * expr
 	| LessThan of expr * expr
 
@@ -24,7 +24,7 @@ and cmd =
 	| Assign of string * expr
 	| FieldAssign of expr * expr * expr
 
-type node = Expr of expr | Bool of boolean | Cmd of cmd;;
+type ast_node = Expr of expr | Bool of boolean | Cmd of cmd;;
 
 
 
