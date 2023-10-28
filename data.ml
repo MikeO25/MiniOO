@@ -22,4 +22,4 @@ and state = (stack * heap)
 
 and control = Cmd of cmd | Block of cmd
 
-and conf = (control * state) | state | RuntimeError
+and conf = ControlAndState of (control * state) | State of state | RuntimeError
