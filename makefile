@@ -12,6 +12,10 @@ all: delete
 	cat check.ml
 	ocamlc -c check.ml
 
+	@echo "#Semantic Domains:"
+	cat data.ml
+	ocamlc -c data.ml
+
 	@echo "# Lexer specification:"
 	cat lexer.mll
 	ocamllex lexer.mll
@@ -32,7 +36,7 @@ all: delete
 	@echo "# compilation of the MiniOO"
 	ocamlc -c minioo.ml
 	@echo "# linking of the lexer, parser & MiniOO"
-	ocamlc -o minioo ast.cmo check.cmo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
+	ocamlc -o minioo ast.cmo check.cmo data.cmo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
 	ls
 	
 	@echo "# using MiniOO"
@@ -99,6 +103,9 @@ all: delete
 	@echo "Test 20:"
 	@echo "var a; {a = proc y: z = y - 1; a(5)}" | ./minioo
 
+	@echo "Test 21:"
+	@echo "var p; {p = proc y:if y < 1 p = 1 else p(y - 1); p(1)}" | ./minioo
+	
 	@echo "# the end."
 
 delete:
