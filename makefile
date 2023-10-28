@@ -34,6 +34,7 @@ all: delete
 	@echo "# linking of the lexer, parser & MiniOO"
 	ocamlc -o minioo ast.cmo check.cmo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
 	ls
+	
 	@echo "# using MiniOO"
 	@echo "Test 1:"
 	@echo "{var x; x = 1; var y; y = 1}" | ./minioo
@@ -93,7 +94,10 @@ all: delete
 	@echo "var x; malloc(y)" | ./minioo
 
 	@echo "Test 19:"
-	@echo "var x; {var a; a = 1; {x = 1; if x == 1 a = 2 else x = 3}}" | ./minioo
+	@echo "var x; {var a; a = 1; {x = 1; if x == 1 {x = 1; malloc(b)} else x = 3}}" | ./minioo
+
+	@echo "Test 20:"
+	@echo "var a; {a = proc y: z = y - 1; a(5)}" | ./minioo
 
 	@echo "# the end."
 

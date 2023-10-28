@@ -1,6 +1,5 @@
 open Ast;;
 
-
 let rec check_cmd vs c = match c with
 	| Skip -> true
 	
@@ -17,6 +16,7 @@ let rec check_cmd vs c = match c with
 	| Malloc(v) -> if (List.mem v vs) 
 				   then true 
 				   else (Printf.printf "`%s` not declared in scope!\n" v; false)
+	
 	| ProcedureCall(e1, e2) -> (check_expr vs e1) && (check_expr vs e2)
 	
 	| Declare(s, c1) -> (check_cmd (s::vs) c1)
@@ -25,7 +25,7 @@ let rec check_cmd vs c = match c with
 	                  then (check_expr vs e) 
 	                  else (Printf.printf "`%s` not declared in scope!\n" v; false)
 	
-	| FieldAssign(e1, e2, e3) -> true (* TODO *)
+	| FieldAssign(e1, e2, e3) -> (check_expr vs e1) && (check_expr vs e2) && (check_expr vs e3)
 
 and check_expr vs e = match e with
 	| Minus(e1, e2) -> (check_expr vs e1) && (check_expr vs e2)
@@ -37,9 +37,9 @@ and check_expr vs e = match e with
 	
 	| Null -> true
 	
-	| Field(s) -> true (* TODO *)
+	| Field(f) -> true 
 	
-	| ProcedureExpression(s, c) -> true (* TODO *)
+	| ProcedureExpression(v, c) -> check_cmd (v::vs) c
 
 and check_bool vs b = match b with
 	| BoolValue(b1) -> true
