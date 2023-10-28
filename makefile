@@ -92,6 +92,9 @@ all: delete
 	@echo "Test 18:"
 	@echo "var x; malloc(y)" | ./minioo
 
+	@echo "Test 19:"
+	@echo "var x; {var a; a = 1; {x = 1; if x == 1 a = 2 else x = 3}}" | ./minioo
+
 	@echo "# the end."
 
 delete:
