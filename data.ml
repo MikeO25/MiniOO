@@ -16,7 +16,7 @@ and frame = (string * int) list
 
 and stack = frame list
 
-and heap = ((int * string) * int) list
+and heap = ((obj * string) * int) list
 
 and state = (stack * heap)
 
