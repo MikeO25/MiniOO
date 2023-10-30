@@ -8,9 +8,9 @@ and location = Object of obj | Null
 
 and closure = (string * cmd * stack)
 
-and value = I of int | F of string | C of closure | L of location
+and value = Int of int | Field of string | Closure of closure | Location of location
 
-and tainted_value = Val of value | RuntimeError
+and tainted_value = Value of value | RuntimeError
 
 and frame = (string * int) list
 
