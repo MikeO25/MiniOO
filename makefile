@@ -16,6 +16,10 @@ all: delete
 	cat data.ml
 	ocamlc -c data.ml
 
+	@echo "#Operational semantics:"
+	cat eval.ml
+	ocamlc -c eval.ml
+
 	@echo "# Lexer specification:"
 	cat lexer.mll
 	ocamllex lexer.mll
@@ -36,7 +40,7 @@ all: delete
 	@echo "# compilation of the MiniOO"
 	ocamlc -c minioo.ml
 	@echo "# linking of the lexer, parser & MiniOO"
-	ocamlc -o minioo ast.cmo check.cmo data.cmo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
+	ocamlc -o minioo ast.cmo check.cmo data.cmo eval.cmo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
 	ls
 	
 	@echo "# using MiniOO"

@@ -1,16 +1,15 @@
-let rec eval_cmd c s: state = match cmd with
-	| Skip -> true
-	| Sequence(c1, c2) -> true
-	| While(b, c1) -> true
-	| If(b, c1, c2) -> true
-	| Parallel(c1, c2) -> true
-	| Atom(c1) -> true
-	| Malloc(v) -> true
-	| ProcedureCall(e1, e2) -> true
-	| Declare(s, c1) -> true
-	| Assign(v, e) -> true
+open Ast;;
+open Data;;
 
-and eval_expr e s: state = match e with
+let rec eval_cmd c s = match c, s with
+	| Declare(s, c1), State(st, hp) 
+							->  let rec l = Object(0)
+							    and f = Frame([(s, l)])
+					            and st' = f::st
+					            and hp' = ((l, "val"), Value(Location(Null)))::hp
+					            in (Block(c1), State(st', hp'))
+
+and eval_expr e s = match e with
 	| Minus(e1, e2) -> true
 	| Ident(v) -> true
 	| Num(i) -> true 
@@ -18,7 +17,7 @@ and eval_expr e s: state = match e with
 	| Field(f) -> true 
 	| ProcedureExpression(v, c) -> true
 
-and eval_bool b s: state = match b with
+and eval_bool b s = match b with
 	| BoolValue(b1) -> true
 	| Equals(e1, e2) -> true
 	| LessThan(e1, e2) -> true
