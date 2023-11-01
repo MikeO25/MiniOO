@@ -1,14 +1,17 @@
 open Ast;;
 
-type boolean = Bool of bool | RuntimeError
+type boolean = Bool of bool | BoolError
 
 and location = Object of int | Null
 
-and closure = (string * cmd * stack)
+and closure = Closure of string * cmd * stack
 
-and value = Int of int | Field of string | Closure of closure | Location of location
+and value =   IntVal of int 
+			| FieldVal of string 
+			| ClosureVal of closure 
+			| LocationVal of location
 
-and tainted_value = Value of value | RuntimeError
+and tainted_value = Value of value | ValueError
 
 and env = Env of (string * location) list
 
@@ -22,6 +25,6 @@ and heap = Heap of ((location * string) * tainted_value) list
 
 and state = State of stack * heap
 
-and control = Cmd of cmd | Block of cmd
+and control = ControlCmd of cmd | Block of cmd
 
-and conf = ControlAndState of (control * state) | OnlyState of state | RuntimeError
+and conf = ControlAndState of (control * state) | OnlyState of state | ProgramError

@@ -1,9 +1,5 @@
 all: delete
 	ls
-	@echo "# Type declarations:"
-	cat miniooDeclarations.ml
-	ocamlc -c miniooDeclarations.ml
-
 	@echo "#Abstract Syntax Tree:"
 	cat ast.ml
 	ocamlc -c ast.ml
@@ -15,6 +11,10 @@ all: delete
 	@echo "#Semantic Domains:"
 	cat data.ml
 	ocamlc -c data.ml
+
+	@echo "# Type declarations:"
+	cat miniooDeclarations.ml
+	ocamlc -c miniooDeclarations.ml
 
 	@echo "#Operational semantics:"
 	cat eval.ml

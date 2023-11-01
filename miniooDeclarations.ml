@@ -1,4 +1,11 @@
 (* File miniooDeclarations.ml *)
+open Data;;
+
+let get_location hp = match hp with
+  | Heap([]) -> Object(0)
+  (*| Heap([((Location(l), _) * _)]) -> Object(l+1)*)
+  (*| Heap(_::rest) -> get_location(rest)*)
+
 
 type symbTable = (string * int) list ;;
 
