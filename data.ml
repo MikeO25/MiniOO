@@ -27,4 +27,4 @@ and state = State of stack * heap
 
 and control = ControlCmd of cmd | Block of cmd
 
-and conf = ControlAndState of (control * state) | OnlyState of state | ProgramError
+and conf = ControlAndState of (control * state) | FinalState of state | ProgramError

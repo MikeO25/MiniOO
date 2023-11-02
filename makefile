@@ -40,7 +40,7 @@ all: delete
 	@echo "# compilation of the MiniOO"
 	ocamlc -c minioo.ml
 	@echo "# linking of the lexer, parser & MiniOO"
-	ocamlc -o minioo ast.cmo check.cmo data.cmo eval.cmo miniooDeclarations.cmo lexer.cmo Syntax.cmo minioo.cmo
+	ocamlc -o minioo ast.cmo check.cmo data.cmo miniooDeclarations.cmo eval.cmo lexer.cmo Syntax.cmo minioo.cmo
 	ls
 	
 	@echo "# using MiniOO"
