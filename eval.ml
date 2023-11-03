@@ -27,7 +27,7 @@ let rec eval_cmd c s = match c, s with
 
 and eval_expr e s = match e, s with
 	| Num(i), 
-	  State(Stack(st), Heap(hp)) -> Value(IntVal(i))
+	  State(st, hp) -> Value(IntVal(i))
 
 (* define function equality / less_than *)
 and eval_bool b s = match b with
