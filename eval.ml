@@ -23,12 +23,18 @@ and eval_cmd (c: cmd) (s: state) = match c, s with
                        let hp' = allocate_val_on_heap loc hp
                        in
                        ControlAndState(Block(c1), State(st', hp'))
-    | _ -> ProgramError
+    | Assign(name, e),
+      State(st, hp) -> let res = eval_expr(e, State(st, hp))
+                       in 
+                       let loc = get_location st
+                       in
+                       let hp' = assign_val_on_heap loc res hp
+                       in
+                       FinalState(State(st', hp'))
 
 
 and eval_expr e s = match e, s with
-	| Num(i), 
-	  State(st, hp) -> Value(IntVal(i))
+	| Num(i), _ -> Value(IntVal(i))
 
 (* define function equality / less_than to check for errors
 with pattern matching
