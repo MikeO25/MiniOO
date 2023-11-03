@@ -7,9 +7,9 @@ and location = Object of int | Null
 and closure = Closure of string * cmd * stack
 
 and value =   IntVal of int 
-			| FieldVal of string 
-			| ClosureVal of closure 
-			| LocationVal of location
+            | FieldVal of string 
+            | ClosureVal of closure 
+            | LocationVal of location
 
 and tainted_value = Value of value | ValueError
 
