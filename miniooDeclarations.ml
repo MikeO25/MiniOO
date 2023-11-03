@@ -1,7 +1,7 @@
 (* File miniooDeclarations.ml *)
 open Data;;
 
-let get_location (h: heap) = Object(0)
+let get_new_location (h: heap) = Object(0)
 
 let create_frame name (l: location) = Frame([(name, l)])
 

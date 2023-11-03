@@ -14,7 +14,7 @@ open MiniooDeclarations;;
 
 let rec eval_cmd c s = match c, s with
 	| Declare(name, c1), 
-	  State(st, hp) -> let l = get_location hp 
+	  State(st, hp) -> let l = get_new_location hp 
 	  								 in
 	  								 let fr = create_frame name l
 	  								 in
