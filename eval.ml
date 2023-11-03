@@ -6,23 +6,24 @@ open MiniooDeclarations;;
 (*let rec eval conf s = match c with 
 	| *)
 
-(*let rec eval_conf c = match c with
-	| ControlAndState(ControlCmd(c1), s) ->
-	| ControlAndState(Block(c1), s)
-	| FinalState -> 
-	| ProgramError -> *)
+let rec eval_conf (c: conf) = match c with
+	| ControlAndState(Control(curr_cmd), curr_state) -> eval_conf (eval_cmd curr_cmd curr_state)
+	| ControlAndState(Block(curr_cmd), curr_state) -> eval_conf (eval_cmd curr_cmd curr_state)
+	| FinalState(s) -> true 
+	| ProgramError -> false
 
-let rec eval_cmd c s = match c, s with
+and eval_cmd (c: cmd) (s: state) = match c, s with
 	| Declare(name, c1), 
-	  State(st, hp) -> let l = get_new_location hp 
-	  								 in
-	  								 let fr = create_frame name l
-	  								 in
-	  								 let st' = add_frame fr st
-	  								 in
-	  								 let hp' = allocate_val_on_heap l hp
-	  								 in
-	  								 ControlAndState(Block(c1), State(st', hp'))
+	  State(st, hp) -> let loc = get_new_location hp 
+                       in
+                       let fr = create_frame name loc
+                       in
+                       let st' = add_frame fr st
+                       in
+                       let hp' = allocate_val_on_heap loc hp
+                       in
+                       ControlAndState(Block(c1), State(st', hp'))
+    | _ -> ProgramError
 
 
 and eval_expr e s = match e, s with

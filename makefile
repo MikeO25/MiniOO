@@ -44,70 +44,74 @@ all: delete
 	ls
 	
 	@echo "# using MiniOO"
+
 	@echo "Test 1:"
+	@echo "var x; x = 1" | ./minioo
+
+	@echo "Test 2:"
 	@echo "{var x; x = 1; var y; y = 1}" | ./minioo
 	
-	@echo "Test 2:"
+	@echo "Test 3:"
 	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; z = 1}; y = z - 1}" | ./minioo
 
-	@echo "Test 2': (correct later)"
+	@echo "Test 3': (correct later)"
 	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; y = 1}; y = z - 1}" | ./minioo
 	
-	@echo "Test 3:"
+	@echo "Test 4:"
 	@echo "var x; var y; var z; z = 1 - y - z - x" | ./minioo
 	
-	@echo "Test 4:"
+	@echo "Test 5:"
 	@echo "{var z; skip; var z; z = 1 - z}" | ./minioo
 	
-	@echo "Test 5:"
+	@echo "Test 6:"
 	@echo "var a; a = proc y: y = y - 1" | ./minioo
 
-	@echo "Test 6:"
+	@echo "Test 7:"
 	@echo "var x; {x = 1; {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
 	
-	@echo "Test 7:"
+	@echo "Test 8:"
 	@echo "{var x; x = 1; var y; y = null}" | ./minioo
 
-	@echo "Test 8:"
+	@echo "Test 9:"
 	@echo "var a; {a = proc y: y = y - 1; a = 1}" | ./minioo
 
-	@echo "Test 9:"
+	@echo "Test 10:"
 	@echo "var x; if true x = 1 else x = 3" | ./minioo
 
-	@echo "Test 10:"
+	@echo "Test 11:"
 	@echo "var x; x.@p = 1" | ./minioo
 
-	@echo "Test 11:"
+	@echo "Test 12:"
 	@echo "var a; {a = proc y: y = y - 1; a(5)}" | ./minioo
 
-	@echo "Test 12:"
+	@echo "Test 13:"
 	@echo "1-1(1-1)" | ./minioo
 
-	@echo "Test 13:"
+	@echo "Test 14:"
 	@echo "var x; {x = 1 ||| {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
 
-	@echo "Test 14:"
+	@echo "Test 15:"
 	@echo "var x; {atom(x = 1) ||| {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
 
-	@echo "Test 15:"
+	@echo "Test 16:"
 	@echo "var x; malloc(x)" | ./minioo
 
-	@echo "Test 16:"
+	@echo "Test 17:"
 	@echo "var x; y = 1" | ./minioo
 
-	@echo "Test 17:"
+	@echo "Test 18:"
 	@echo "var x;{x = 1; var y; x = a - 1}" | ./minioo
 
-	@echo "Test 18:"
+	@echo "Test 19:"
 	@echo "var x; malloc(y)" | ./minioo
 
-	@echo "Test 19:"
+	@echo "Test 20:"
 	@echo "var x; {var a; a = 1; {x = 1; if x == 1 {x = 1; malloc(b)} else x = 3}}" | ./minioo
 
-	@echo "Test 20:"
+	@echo "Test 21:"
 	@echo "var a; {a = proc y: z = y - 1; a(5)}" | ./minioo
 
-	@echo "Test 21:"
+	@echo "Test 22:"
 	@echo "var p; {p = proc y:if y < 1 p = 1 else p(y - 1); p(1)}" | ./minioo
 	
 	@echo "# the end."

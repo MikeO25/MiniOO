@@ -4,6 +4,8 @@
 
 open Ast
 open Check
+open Eval
+open Data
 
 
 %} /* declarations */
@@ -35,8 +37,13 @@ open Check
 prog :
     c=cmd EOL  {
                 if (check_cmd [] c) 
-                then print_endline "Success!" 
+                then print_endline "Static check Success!" 
                 else print_endline "Static check failed."; 
+                let start_conf = ControlAndState(Control(c), State(Stack([]), Heap([])))
+                in
+                if eval_conf start_conf
+                then print_endline "Successfully Evaluated"
+                else print_endline "Evaluation Failed :(";
                 ()
             }
 
