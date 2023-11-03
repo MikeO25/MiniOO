@@ -29,7 +29,11 @@ and eval_expr e s = match e, s with
 	| Num(i), 
 	  State(st, hp) -> Value(IntVal(i))
 
-(* define function equality / less_than *)
+(* define function equality / less_than to check for errors
+with pattern matching
+	Error1, _ -> Error
+	_, Error2 -> Error
+*)
 and eval_bool b s = match b with
 	| BoolValue(b1) -> Bool(b1)
 	| Equals(e1, e2) -> let rec v1 = eval_expr(e1)
