@@ -1,10 +1,15 @@
 (* File miniooDeclarations.ml *)
 open Data;;
 
-let get_location hp = match hp with
-  | Heap([]) -> Object(0)
-  (*| Heap([((Location(l), _) * _)]) -> Object(l+1)*)
-  (*| Heap(_::rest) -> get_location(rest)*)
+let get_location (h: heap) = Object(0)
+
+let create_frame name (l: location) = Frame([(name, l)])
+
+let add_frame (fr: frame) (s: stack) = match s with
+  | Stack(s) -> Stack(fr::s)
+
+let allocate_val_on_heap (l: location) (h: heap) = match h with
+  | Heap(hp) -> Heap(((l, "val"), Value(LocationVal(Null)))::hp)
 
 
 type symbTable = (string * int) list ;;
