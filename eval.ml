@@ -14,7 +14,7 @@ let rec eval_conf (c: conf) = match c with
 
 and eval_cmd (c: cmd) (s: state) = match c, s with
 	| Declare(name, c1), 
-	  State(st, hp) -> let loc = get_new_location hp 
+	  State(st, hp) ->   let loc = get_new_location hp 
                        in
                        let fr = create_frame name loc
                        in
@@ -24,17 +24,18 @@ and eval_cmd (c: cmd) (s: state) = match c, s with
                        in
                        ControlAndState(Block(c1), State(st', hp'))
     | Assign(name, e),
-      State(st, hp) -> let res = eval_expr(e, State(st, hp))
+      State(st, hp) -> let res = eval_expr e (State(st, hp))
                        in 
                        let loc = get_location st
                        in
                        let hp' = assign_val_on_heap loc res hp
                        in
-                       FinalState(State(st', hp'))
+                       FinalState(State(st, hp'))
 
 
 and eval_expr e s = match e, s with
 	| Num(i), _ -> Value(IntVal(i))
+	| _,_ -> Value(IntVal(0))
 
 (* define function equality / less_than to check for errors
 with pattern matching

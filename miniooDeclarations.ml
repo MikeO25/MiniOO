@@ -1,7 +1,8 @@
 (* File miniooDeclarations.ml *)
 open Data;;
 
-let get_new_location (h: heap) = Object(0)
+let get_new_location (hp: heap) = Object(0)
+let get_location (st: stack) = Object(0)
 
 let create_frame name (l: location) = Frame([(name, l)])
 
@@ -11,6 +12,8 @@ let add_frame (fr: frame) (s: stack) = match s with
 let allocate_val_on_heap (l: location) (h: heap) = match h with
   | Heap(hp) -> Heap(((l, "val"), Value(LocationVal(Null)))::hp)
 
+let assign_val_on_heap (l: location) (res: tainted_value) (h: heap) = match h with
+  | Heap(hp) -> Heap(((l, "val"), Value(LocationVal(Null)))::hp)
 
 type symbTable = (string * int) list ;;
 
