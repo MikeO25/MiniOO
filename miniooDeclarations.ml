@@ -1,8 +1,26 @@
-(* File miniooDeclarations.ml *)
+(* File helpers.ml *)
 open Data;;
+open Printf;;
 
-let get_new_location (hp: heap) = Object(0)
-let get_location (st: stack) = Object(0)
+let rec print_heap (h: heap) = match h with
+  | Heap([]) -> ()
+  | Heap(((Object(i), f), Value(IntVal(v)))::tl) -> printf "[loc=%d, field=`%s`, value=%d] \n" i f v; print_heap (Heap(tl)); ()
+  | Heap(((Object(i), f), Value(LocationVal(v)))::tl) -> printf "[loc=%d, field=`%s`, value=null] \n" i f; print_heap (Heap(tl)); ()
+
+let rec get_new_location (h: heap) = match h with 
+  | Heap([]) -> Object(0)
+  | Heap(((Object(i), _), _)::tl) -> let Object(j) = get_new_location (Heap(tl))
+                                     in
+                                     if j > i 
+                                     then Object(j + 1)
+                                     else Object(i + 1)
+
+
+
+let rec get_location (name: string) (s: stack) = match s with
+  | Stack([]) -> Null
+  | Stack(Frame([(name, l)])::_) -> l
+  | Stack(Frame([(_, l)])::tl) -> get_location name (Stack(tl))
 
 let create_frame name (l: location) = Frame([(name, l)])
 
@@ -16,8 +34,13 @@ let add_frame (fr: frame) (s: stack) = match s with
 let allocate_val_on_heap (l: location) (h: heap) = match h with
   | Heap(hp) -> Heap(((l, "val"), Value(LocationVal(Null)))::hp)
 
-let assign_val_on_heap (l: location) (res: tainted_value) (h: heap) = match h with
-  | Heap(hp) -> Heap(((l, "val"), Value(LocationVal(Null)))::hp)
+let assign_val_on_heap (l: location) (res: tainted_value) (h: heap) = 
+    match h, res with
+  | Heap(hp), Value(IntVal(i)) -> let hp' = List.remove_assoc (l, "val") hp
+                                  in 
+                                  Heap(((l, "val"), Value(IntVal(i)))::hp')
+
+  | Heap(hp), _ -> Heap(((l, "val"), Value(LocationVal(Null)))::hp)
 
 type symbTable = (string * int) list ;;
 

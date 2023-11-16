@@ -15,14 +15,11 @@ during parsing, pretty print the abstract syntax tree, and check the
 correctness of your parser on MiniOO examples.
 
 TODO:
-- add Malloc to grammar
-- fix proc 
-- add atom to lexer and grammar 
-- add parallelism to lexer and grammar
-- add field to lexer and grammar
-- add recursive call to lexer and grammar
+- fix sequence
+- figure out what to do with block
 
 PROGRESS LOG:
+nov 15 - got assign to work + started wokring on sequence - 1 hr 10 min
 nov 14 - worked on assignments and declarations - 10 min
 
 

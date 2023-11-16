@@ -49,9 +49,15 @@ all: delete
 	@echo "var x; x = 1" | ./minioo
 
 	@echo "Test 2:"
-	@echo "{var x; x = 1; var y; y = 1}" | ./minioo
-	
+	@echo "var x; var y; var z; x = 5" | ./minioo
+
 	@echo "Test 3:"
+	@echo "{var x; x = 1; var y; y = 2}" | ./minioo
+
+	@echo "Test 4:"
+	@echo "var x; var y; var z; {x = 1; {y = 2; z = 3}}" | ./minioo
+	
+	@echo "Test 5:"
 	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; z = 1}; y = z - 1}" | ./minioo
 
 	@echo "Test 3': (correct later)"
