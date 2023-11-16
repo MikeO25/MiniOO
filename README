@@ -15,7 +15,6 @@ during parsing, pretty print the abstract syntax tree, and check the
 correctness of your parser on MiniOO examples.
 
 TODO:
-- fix sequence
 - figure out what to do with block
 
 PROGRESS LOG:
