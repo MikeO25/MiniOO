@@ -16,6 +16,7 @@ correctness of your parser on MiniOO examples.
 
 TODO:
 - figure out what to do with block
+- figure out how to manage the stack and heap with sequence
 
 PROGRESS LOG:
 nov 15 - got assign, sequence in eval_cmd working and minus, ident in eval_expr working  - 1 hr 40 min
