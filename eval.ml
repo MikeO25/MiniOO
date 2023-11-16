@@ -41,7 +41,7 @@ and eval_cmd (c: cmd) (s: state) = match c, s with
 										 | ControlAndState(Block(c1'), State(st', hp'))
 										 		-> eval_cmd (Sequence(c1', c2)) (State(st', hp'))
 										 | FinalState(State(st', hp')) 
-										 		->  eval_cmd c2 (State(st', hp'))
+										 		-> eval_cmd c2 (State(st', hp'))
 										 | ProgramError -> ProgramError
 
 

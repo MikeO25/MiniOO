@@ -19,8 +19,8 @@ let rec get_new_location (h: heap) = match h with
 
 let rec get_location (name: string) (s: stack) = match s with
   | Stack([]) -> Null
-  | Stack(Frame([(name, l)])::_) -> l
-  | Stack(Frame([(_, l)])::tl) -> get_location name (Stack(tl))
+  | Stack(Frame([(n, l)])::tl) -> if n = name then l  
+                                  else get_location name (Stack(tl))
 
 let create_frame name (l: location) = Frame([(name, l)])
 
