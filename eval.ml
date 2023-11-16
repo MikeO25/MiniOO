@@ -66,8 +66,8 @@ with pattern matching
 and eval_bool b s = match b with
   | BoolValue(b1) -> Bool(b1)
   | Equals(e1, e2) -> let rec v1 = eval_expr(e1)
-  					and v2 = eval_expr(e2)
-  					in Bool(v1 = v2)
+                      and v2 = eval_expr(e2)
+                      in Bool(v1 = v2)
   | LessThan(e1, e2) -> let rec v1 = eval_expr(e1)
-  					  and v2 = eval_expr(e2)
-  					  in Bool(v1 < v2)
+                        and v2 = eval_expr(e2)
+                        in Bool(v1 < v2)
