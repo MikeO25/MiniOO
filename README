@@ -18,7 +18,7 @@ TODO:
 - figure out what to do with block
 
 PROGRESS LOG:
-nov 15 - got assign to work + started wokring on sequence - 1 hr 10 min
+nov 15 - got assign, sequence in eval_cmd working and minus, ident in eval_expr working  - 1 hr 40 min
 nov 14 - worked on assignments and declarations - 10 min
 
 
