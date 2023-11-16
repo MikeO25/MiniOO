@@ -47,6 +47,15 @@ and eval_cmd (c: cmd) (s: state) = match c, s with
 
 and eval_expr e s = match e, s with
 	| Num(i), _ -> Value(IntVal(i))
+	| Ident(name), State(st, hp) -> let loc = get_location name st
+																	in
+																	get_val_from_heap loc "val" hp
+	| Minus(e1, e2), s -> let v1 = eval_expr e1 s
+											  and v2 = eval_expr e2 s
+											  in 
+											  match v1, v2 with 
+											  | Value(IntVal(i)), Value(IntVal(j)) -> Value(IntVal(i - j))
+											  | _, _ -> ValueError
 	| _,_ -> Value(IntVal(0))
 
 (* define function equality / less_than to check for errors

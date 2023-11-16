@@ -42,6 +42,12 @@ let assign_val_on_heap (l: location) (res: tainted_value) (h: heap) =
 
   | Heap(hp), _ -> Heap(((l, "val"), Value(LocationVal(Null)))::hp)
 
+
+let get_val_from_heap (l: location) (f: string) (h: heap) = match h with 
+  | Heap(hp) -> if List.mem_assoc (l, f) hp
+                then List.assoc (l, f) hp 
+                else ValueError
+
 type symbTable = (string * int) list ;;
 
 let sb = ref([] : symbTable) ;;
