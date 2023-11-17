@@ -38,7 +38,7 @@ prog :
     c=cmd EOL  {
                 if (check_cmd [] c) 
                 then print_endline "Static check Success!" 
-                else print_endline "Static check failed."; 
+                else print_endline "Static check failed.";
                 let start_conf = ControlAndState(Control(c), State(Stack([]), Heap([])))
                 in
                 if eval_conf start_conf
