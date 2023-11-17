@@ -2,6 +2,15 @@
 open Data;;
 open Printf;;
 
+let rec print_frame (fr: frame) = match fr with
+  | Frame([]) -> ()
+  | Frame((name, Object(i))::rest) -> printf "[name=`%s`, location=%d]\n" name i; print_frame (Frame(rest)); ()
+  | Frame((name, Null)::rest) -> printf "[name=`%s`, location=null]\n" name; print_frame (Frame(rest)) ; ()
+
+let rec print_stack (s: stack) = match s with
+  | Stack([]) -> ()
+  | Stack(fr::rest) -> (print_frame fr; print_stack (Stack(rest)); ())
+
 let rec print_heap (h: heap) = match h with
   | Heap([]) -> ()
   | Heap(((Object(i), f), Value(IntVal(v)))::tl) -> printf "[loc=%d, field=`%s`, value=%d] \n" i f v; print_heap (Heap(tl)); ()

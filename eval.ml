@@ -9,7 +9,12 @@ open MiniooDeclarations;;
 let rec eval_conf (c: conf) = match c with
 	| ControlAndState(Control(curr_cmd), curr_state) -> eval_conf (eval_cmd curr_cmd curr_state)
 	| ControlAndState(Block(curr_cmd), curr_state) -> eval_conf (eval_cmd curr_cmd curr_state)
-	| FinalState(State(s, h)) -> print_heap h; true 
+	
+  | FinalState(State(s, h)) -> print_endline "Stack:";
+                               print_stack s; 
+                               print_endline "Heap:"; 
+                               print_heap h; 
+                               true 
 	| ProgramError -> false
 
 and eval_cmd (c: cmd) (s: state) = match c, s with
