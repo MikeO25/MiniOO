@@ -12,7 +12,7 @@ open Data
 
 %token EOL SEMICOLON COLON ASSIGN  /* lexer tokens */
 %token EQUALS MINUS LBRACKET RBRACKET LPAREN RPAREN
-%token VAR WHILE PROC SKIP TRUE FALSE IF ELSE LESS_THAN NULL MALLOC ATOM /* reserved words */
+%token VAR WHILE PROC SKIP TRUE FALSE IF THEN ELSE LESS_THAN NULL MALLOC ATOM /* reserved words */
 %token DOT AT THREE_BARS
 %token <string> IDENT
 %token <int> NUM
@@ -74,7 +74,7 @@ sequential_control:
     | WHILE b=boolean c=cmd 
         {While(b, c)}
     
-    | IF b=boolean c1=cmd ELSE c2=cmd 
+    | IF b=boolean THEN c1=cmd ELSE c2=cmd 
         {If(b, c1, c2)} 
 
 (* command *)

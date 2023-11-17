@@ -9,6 +9,7 @@ rule token = parse
   | "proc"     { PROC }
   | "while"    { WHILE }
   | "if"       { IF }
+  | "then"     { THEN }
   | "else"     { ELSE }
   | "skip"     { SKIP }
   | "var"      { VAR }
