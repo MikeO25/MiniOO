@@ -17,8 +17,10 @@ correctness of your parser on MiniOO examples.
 TODO:
 - figure out what to do with block
 - figure out how to manage the stack and heap with sequence
+- implement pprint ast
 
 PROGRESS LOG:
+nov 16 - got if working, added printing for stack and heap 1 hr 30 min
 nov 15 - got assign, sequence in eval_cmd working and minus, ident in eval_expr working  - 1 hr 40 min
 nov 14 - worked on assignments and declarations - 10 min
 
