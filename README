@@ -19,6 +19,7 @@ TODO:
 - figure out how to manage the stack and heap with sequence
 - implement pprint ast
 - when static check fails dont try to run the program
+- Make it so block can pop from stack in the original version
 PROGRESS LOG:
 nov 16 - got if working, added printing for stack and heap - 1 hr 30 min
 nov 15 - got assign, sequence in eval_cmd working and minus, ident in eval_expr working  - 1 hr 40 min

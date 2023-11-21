@@ -41,7 +41,9 @@ prog :
                 else print_endline "Static check failed.";
                 let start_conf = ControlAndState(Control(c), State(Stack([]), Heap([])))
                 in
-                if eval_conf start_conf
+                let final_res =  eval_cmd start_conf
+                in 
+                if eval_final final_res
                 then print_endline "Successfully Evaluated"
                 else print_endline "Evaluation Failed :(";
                 ()
