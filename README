@@ -15,12 +15,12 @@ during parsing, pretty print the abstract syntax tree, and check the
 correctness of your parser on MiniOO examples.
 
 TODO:
-- figure out what to do with block
-- figure out how to manage the stack and heap with sequence
-- implement pprint ast
-- when static check fails dont try to run the program
-- Make it so block can pop from stack in the original version
+- add procedures
+- add fields
+- add malloc
+- add AST pprint
 PROGRESS LOG:
+nov 24 - Added while loops and PLUS
 nov 16 - got if working, added printing for stack and heap - 1 hr 30 min
 nov 15 - got assign, sequence in eval_cmd working and minus, ident in eval_expr working  - 1 hr 40 min
 nov 14 - worked on assignments and declarations - 10 min

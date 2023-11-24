@@ -1,19 +1,18 @@
 var first; 
 var second; 
 var n; 
-var i; 
-{first = 0; 
-	{second = 1; 
-		{n = 10; 
-			{i=0; 
-				{while i < n do 
-					{temp = second; 
-						{second = first + second; 
-						 first = temp
-						}
-					}
-				}
-			}
+var i;
+var temp;
+ 
+{n = 10; 
+{i=0; 
+	while i < n 
+		{i = i + 1;
+		{if i == 0 then {first = 0; second = 1}
+		 else {temp = second; 
+			  {second = first + second; 
+		      first = temp}}}}}
 		}
-	}
-}
+		{temp = second; 
+		{second = first + second; 
+		 first = temp}}}}}
