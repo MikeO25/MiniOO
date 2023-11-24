@@ -65,6 +65,9 @@ all: delete
 
 	@echo "Test 7:"
 	@echo "var x; var y; var z; {x = 1; {y = 1; if y == x then z = 100 else z = 0}}" | ./minioo
+
+	@echo "Test 8:"
+	@echo "var first; var second; var n; var i; var temp; {first = 0; {second = 1; {n = 10; {i=0; while i < n {i = i + 1; {temp = second; {second = first + second; first = temp}}}}}}}" | ./minioo	
 	
 	@echo "Test 5:"
 	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; z = 1}; y = z - 1}" | ./minioo

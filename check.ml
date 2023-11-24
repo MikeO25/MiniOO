@@ -30,6 +30,8 @@ let rec check_cmd vs c = match c with
 and check_expr vs e = match e with
 	| Minus(e1, e2) -> (check_expr vs e1) && (check_expr vs e2)
 	
+	| Plus(e1, e2) -> (check_expr vs e1) && (check_expr vs e2)
+
 	| Ident(v) -> if (List.mem v vs) 
 				  then true 
 				  else (Printf.printf "`%s` not declared in scope!\n" v; false)

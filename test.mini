@@ -1,1 +1,19 @@
-var z; z = 1 - 1
+var first; 
+var second; 
+var n; 
+var i; 
+{first = 0; 
+	{second = 1; 
+		{n = 10; 
+			{i=0; 
+				{while i < n do 
+					{temp = second; 
+						{second = first + second; 
+						 first = temp
+						}
+					}
+				}
+			}
+		}
+	}
+}

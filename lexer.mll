@@ -30,6 +30,7 @@ rule token = parse
   | '<'        { LESS_THAN }
   | '='        { ASSIGN }
   | '-'        { MINUS }
+  | '+'        { PLUS }
   | '{'        { LBRACKET }
   | '}'        { RBRACKET }
   | '('        { LPAREN   }

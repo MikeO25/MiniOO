@@ -11,7 +11,7 @@ open Data
 %} /* declarations */
 
 %token EOL SEMICOLON COLON ASSIGN  /* lexer tokens */
-%token EQUALS MINUS LBRACKET RBRACKET LPAREN RPAREN
+%token EQUALS MINUS PLUS LBRACKET RBRACKET LPAREN RPAREN
 %token VAR WHILE PROC SKIP TRUE FALSE IF THEN ELSE LESS_THAN NULL MALLOC ATOM /* reserved words */
 %token DOT AT THREE_BARS
 %token <string> IDENT
@@ -120,6 +120,8 @@ expr :
         {ProcedureExpression(i, c)} (* Recursive procedure expression *)
   
   | e1=expr MINUS e2=expr {Minus(e1, e2)}
+
+  | e1=expr PLUS e2=expr {Plus(e1, e2)}
 
   | i=IDENT {Ident(i)}
 

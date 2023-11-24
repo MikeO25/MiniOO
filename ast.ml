@@ -1,5 +1,6 @@
 type expr = 
 	| Minus of expr * expr
+	| Plus of expr * expr
 	| Ident of string
 	| Num of int
 	| Null

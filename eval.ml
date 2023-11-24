@@ -4,15 +4,15 @@ open MiniooDeclarations;;
 
 (* pass in control and state *)
 (*let rec eval conf s = match c with 
-	| *)
+  | *)
 
-let rec eval_final (c: conf) = match c with	
+let rec eval_final (c: conf) = match c with 
   | FinalState(State(s, h)) -> print_endline "Stack:";
                                print_stack s; 
                                print_endline "Heap:"; 
                                print_heap h; 
                                true 
-	| ProgramError -> false
+  | ProgramError -> false
 
 and eval_cmd (c: conf) = match c with
   (* Block *)
@@ -68,7 +68,7 @@ and eval_cmd (c: conf) = match c with
       Control(
         Sequence(c1, c2)
       ), 
-  	 State(st, hp)) ->
+     State(st, hp)) ->
                       let res_c1 = eval_cmd (ControlAndState(Control(c1), State(st, hp)))
                       in 
                       (match res_c1 with
@@ -76,8 +76,25 @@ and eval_cmd (c: conf) = match c with
                           -> eval_cmd (ControlAndState(Control(c2), State(st, hp'))) 
                         | ProgramError -> ProgramError
                       )
-  (* Procedure *)
+  (* While *)
   | ControlAndState(
+      Control(
+        While(b, c1)
+      ), s) -> let res = eval_bool b s
+                   in
+                   (match res with 
+                    | Bool(is_true) -> if is_true then
+                                       eval_cmd  (ControlAndState(
+                                                    Control(Sequence(
+                                                              c1, 
+                                                              While(b, c1))), 
+                                                    s))
+                                       else FinalState(s)
+                    | BoolError -> ProgramError 
+
+                   ) 
+  (* Procedure *)
+  (*| ControlAndState(
       Control(
         ProcedureCall(e1, e2)
       ), 
@@ -97,7 +114,7 @@ and eval_cmd (c: conf) = match c with
                              eval_cmd (ControlAndState(Block(c1), 
                                        State(st'', hp'))) 
                           _  -> ProgramError
-                       )
+                       )*)
 
 and eval_expr e s = match e, s with
   | Num(i), _ -> Value(IntVal(i))
@@ -112,15 +129,22 @@ and eval_expr e s = match e, s with
                         (match v1, v2 with 
                         | Value(IntVal(i)), Value(IntVal(j)) -> Value(IntVal(i - j))
                         | _, _ -> ValueError)
+
+  | Plus(e1, e2), s -> let v1 = eval_expr e1 s
+                       and v2 = eval_expr e2 s
+                       in 
+                       (match v1, v2 with 
+                       | Value(IntVal(i)), Value(IntVal(j)) -> Value(IntVal(i + j))
+                       | _, _ -> ValueError)
   
-  | ProcedureExpression(name, cmd), State(st, hp) 
-                      -> Value(Closure(name, cmd, st))
+  (*| ProcedureExpression(name, cmd), State(st, hp) 
+                      -> Value(Closure(name, cmd, st))*)
   | _,_ -> Value(IntVal(0))
 
 (* define function equality / less_than to check for errors
 with pattern matching
-	Error1, _ -> Error
-	_, Error2 -> Error
+  Error1, _ -> Error
+  _, Error2 -> Error
 *)
 and eval_bool b s = match b with
   | BoolValue(b1) -> Bool(b1)
