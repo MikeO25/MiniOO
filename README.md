@@ -11,7 +11,7 @@ test.mini | xargs echo | ./minioo
 Current - fix ambiguous grammar for field with addition <br>
 Next -  Write pprint AST / report <br>
 
-# TODO
+# todo
 - fix y = x.@f + 1 being read as x.(@f + 1) 
 - add AST pprint
 - clean stack feature
