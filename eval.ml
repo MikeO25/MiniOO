@@ -49,9 +49,26 @@ and eval_cmd (c: conf) = match c with
                         in 
                         let loc = get_location name st
                         in
-                        let hp' = assign_val_on_heap loc res hp
+                        let hp' = assign_val_on_heap loc "val" res hp
                         in
                         FinalState(State(st, hp'))
+
+    (* FieldAssign *)
+  | ControlAndState(
+      Control(    
+        FieldAssign(e1, e2, e3)   
+      ),  
+      State(st, hp)) -> let v1 = eval_expr e1 (State(st, hp))
+                       and v2 = eval_expr e2 (State(st, hp))
+                       and v3 = eval_expr e3 (State(st, hp))
+                       in
+                       (match v1, v2, v3 with 
+                        | Value(LocationVal(loc)), Value(FieldVal(f)), Value(v) 
+                            -> let hp' = assign_val_on_heap loc f (Value(v)) hp
+                               in
+                               FinalState(State(st, hp'))
+                        | _, _, _ -> ProgramError
+                       )
 
   (* If *)
   | ControlAndState(
@@ -66,6 +83,17 @@ and eval_cmd (c: conf) = match c with
   
   (* Skip *)
   | ControlAndState(Control(Skip), s) -> FinalState(s)
+
+  (* Malloc *)
+  | ControlAndState(
+      Control(Malloc(name)), 
+      State(st, hp)) ->  let loc = get_location name st
+                         in
+                         let m_loc = get_new_location hp
+                         in 
+                         let hp' = assign_val_on_heap loc "val" (Value(LocationVal(m_loc))) hp
+                         in
+                         FinalState(State(st, hp'))
 
   (* Sequence *)
   | ControlAndState(
@@ -118,7 +146,7 @@ and eval_cmd (c: conf) = match c with
                                in
                                let hp' = allocate_val_on_heap loc hp
                                in
-                               let hp'' = assign_val_on_heap loc v2 hp'
+                               let hp'' = assign_val_on_heap loc "val" v2 hp'
                                in
                                eval_cmd (ControlAndState(Block(c1), 
                                          State(st'', hp''))) 
@@ -127,11 +155,23 @@ and eval_cmd (c: conf) = match c with
 
 and eval_expr e s = match e, s with
   | Num(i), _ -> Value(IntVal(i))
+
+  | Field(name), _ -> Value(FieldVal(name))
   
   | Ident(name), State(st, hp) -> let loc = get_location name st
                                   in
                                   get_val_from_heap loc "val" hp
   
+  | FieldExpression(e1, e2), State(st, hp) -> let v1 = eval_expr e1 s
+                                              and v2 = eval_expr e2 s
+                                              in
+                                              (match v1, v2 with
+                                               | Value(LocationVal(loc)), Value(FieldVal(f)) -> get_val_from_heap loc f hp
+                                               | Value(LocationVal(loc)), ValueError -> print_endline "HELLO"; ValueError
+                                               | _, _ -> ValueError
+                                              )
+
+
   | Minus(e1, e2), s -> let v1 = eval_expr e1 s
                         and v2 = eval_expr e2 s
                         in 
@@ -144,6 +184,7 @@ and eval_expr e s = match e, s with
                        in 
                        (match v1, v2 with 
                        | Value(IntVal(i)), Value(IntVal(j)) -> Value(IntVal(i + j))
+                       | Value(FieldVal(i)), _ -> print_endline ":("; ValueError
                        | _, _ -> ValueError)
   
   | ProcedureExpression(name, cmd), State(st, _) -> Value(ClosureVal(Closure(name, cmd, st)))

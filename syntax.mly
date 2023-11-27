@@ -24,9 +24,9 @@ open Data
 %type <Ast.cmd> assign
 %type <Ast.cmd> declare
 %type <Ast.cmd> sequential_control
+%type <Ast.cmd> field_assignment
 %type <Ast.expr> expr
 %type <Ast.expr> field
-%type <Ast.cmd> field_assignment
 %type <Ast.cmd> recursive_procedure_call
 %type <Ast.cmd> parallelism
 %type <Ast.cmd> dynamic_object_allocation
@@ -104,7 +104,7 @@ declare:
 (* command *)
 assign:
     i=IDENT ASSIGN e=expr  {Assign(i, e)}
-	
+
 field:
     AT i=IDENT {Field(i)}
 
@@ -115,6 +115,12 @@ field_assignment:
 
 expr :
   | f=field {f}
+
+  | i=IDENT {Ident(i)}
+
+  | n=NUM {Num(n)}
+
+  | e1=expr DOT e2=expr {FieldExpression(e1, e2)}
   
   | PROC i=IDENT COLON c=cmd  
         {ProcedureExpression(i, c)} (* Recursive procedure expression *)
@@ -122,10 +128,6 @@ expr :
   | e1=expr MINUS e2=expr {Minus(e1, e2)}
 
   | e1=expr PLUS e2=expr {Plus(e1, e2)}
-
-  | i=IDENT {Ident(i)}
-
-  | n=NUM {Num(n)}
 
   | NULL  {Null} 
 

@@ -8,22 +8,19 @@
 % ^D
 % make delete
 
-Current: Parser and Lexer for Full MiniOO
-Next (2023-10-17): Choose an OCaml type to implement the abstract 
-syntax tree (AST), produce the abstract syntax tree of full MiniOO 
-during parsing, pretty print the abstract syntax tree, and check the 
-correctness of your parser on MiniOO examples.
+Current: fix ambiguous grammar for field with addition
+Next (2023-10-17): Write pprint AST / report
 
 TESTING:
 test.mini | xargs echo | ./minioo
 
 TODO:
-- add fields
-- add malloc
+- fix y = x.@f + 1 being read as x.(@f + 1) 
 - add AST pprint
 - clean stack feature
 - parallelism + atom 
 PROGRESS LOG:
+nov 27 - wrote code for field/malloc - 2 hr
 nov 26 - got recursive procedure working - 1 hr 30 min
 nov 24 - Added while loops and PLUS
 nov 16 - got if working, added printing for stack and heap - 1 hr 30 min

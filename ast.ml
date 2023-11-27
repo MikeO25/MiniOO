@@ -5,6 +5,7 @@ type expr =
 	| Num of int
 	| Null
 	| Field of string
+	| FieldExpression of expr * expr
 	| ProcedureExpression of string * cmd 
 
 and boolean =

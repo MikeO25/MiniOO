@@ -1,0 +1,28 @@
+var ans;
+var fib;
+var n;
+var i;
+{
+	fib = proc x: while i < n 			
+					{
+					  	i = i + 1; 
+					  	{
+					  		x.@t = x.@s; 
+					 		{
+					 			x.@s = x.@f + x.@s; 
+					 			x.@f = x.@t
+					 		}
+					 	}
+					};
+	{
+		n = 5;
+		{
+			i = 0;
+			{
+				malloc(ans);
+				fib(ans)
+			}
+		}
+	}
+			
+}

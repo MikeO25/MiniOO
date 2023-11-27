@@ -84,6 +84,12 @@ all: delete
 	@echo "Test 13:"
 	@echo "var f; { {var f; {f = 2; skip}; skip}; f = 1}" | ./minioo
 	
+	@echo "Test 14:"
+	@echo "var x; var y; {malloc(x); {x.@a = 2; {y = @b; x.y = 3}}}" | ./minioo
+
+	@echo "Test 15:"
+	@echo "var x; var y; {malloc(x); {malloc(y); {x.@a = 2; y.@b = x.@a + 1}}}" | ./minioo
+
 	@echo "Test 5:"
 	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; z = 1}; y = z - 1}" | ./minioo
 

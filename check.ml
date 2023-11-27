@@ -25,6 +25,7 @@ let rec check_cmd vs c = match c with
 	                  then (check_expr vs e) 
 	                  else (Printf.printf "`%s` not declared in scope!\n" v; false)
 	
+	(* TODO: maybe create visible fields *)
 	| FieldAssign(e1, e2, e3) -> (check_expr vs e1) && (check_expr vs e2) && (check_expr vs e3)
 
 and check_expr vs e = match e with
@@ -40,6 +41,8 @@ and check_expr vs e = match e with
 	| Null -> true
 	
 	| Field(f) -> true 
+
+	| FieldExpression(e1, e2) -> (check_expr vs e1) && (check_expr vs e2)
 	
 	| ProcedureExpression(v, c) -> check_cmd (v::vs) c
 
