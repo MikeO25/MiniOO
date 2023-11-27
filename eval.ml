@@ -63,6 +63,10 @@ and eval_cmd (c: conf) = match c with
                                              else eval_cmd (ControlAndState(Control(c2), s))
                               | BoolError -> ProgramError)
 
+  
+  (* Skip *)
+  | ControlAndState(Control(Skip), s) -> FinalState(s)
+
   (* Sequence *)
   | ControlAndState(
       Control(
@@ -85,36 +89,41 @@ and eval_cmd (c: conf) = match c with
                    (match res with 
                     | Bool(is_true) -> if is_true then
                                        eval_cmd  (ControlAndState(
-                                                    Control(Sequence(
-                                                              c1, 
-                                                              While(b, c1))), 
+                                                    Control(
+                                                      Sequence(
+                                                        c1, 
+                                                        While(b, c1))), 
                                                     s))
                                        else FinalState(s)
                     | BoolError -> ProgramError 
 
                    ) 
   (* Procedure *)
-  (*| ControlAndState(
+  | ControlAndState(
       Control(
         ProcedureCall(e1, e2)
       ), 
      State(st, hp)) ->
                        let v1 = eval_expr e1 (State(st, hp))
+                       and v2 = eval_expr e2 (State(st, hp))
                        in
-                       ( match v1 with
-                          Closure(name, c1, st') 
-                          -> let loc = get_new_location hp 
-                             in
-                             let fr = create_frame name loc
-                             in
-                             let st'' = st' (add_frame fr st)
-                             in
-                             let hp' = allocate_val_on_heap loc hp
-                             in
-                             eval_cmd (ControlAndState(Block(c1), 
-                                       State(st'', hp'))) 
-                          _  -> ProgramError
-                       )*)
+                       (match v1, v2 with
+                          | Value(ClosureVal(Closure(name, c1, st'))), ValueError -> ProgramError
+                          | Value(ClosureVal(Closure(name, c1, st'))), v2
+                            -> let loc = get_new_location hp 
+                               in
+                               let fr = create_frame name loc
+                               in
+                               let st'' = consolidate_for_closure fr st' st
+                               in
+                               let hp' = allocate_val_on_heap loc hp
+                               in
+                               let hp'' = assign_val_on_heap loc v2 hp'
+                               in
+                               eval_cmd (ControlAndState(Block(c1), 
+                                         State(st'', hp''))) 
+                          | _, _  -> ProgramError
+                       )
 
 and eval_expr e s = match e, s with
   | Num(i), _ -> Value(IntVal(i))
@@ -137,8 +146,8 @@ and eval_expr e s = match e, s with
                        | Value(IntVal(i)), Value(IntVal(j)) -> Value(IntVal(i + j))
                        | _, _ -> ValueError)
   
-  (*| ProcedureExpression(name, cmd), State(st, hp) 
-                      -> Value(Closure(name, cmd, st))*)
+  | ProcedureExpression(name, cmd), State(st, _) -> Value(ClosureVal(Closure(name, cmd, st)))
+  
   | _,_ -> Value(IntVal(0))
 
 (* define function equality / less_than to check for errors

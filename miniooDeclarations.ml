@@ -15,6 +15,7 @@ let rec print_heap (h: heap) = match h with
   | Heap([]) -> ()
   | Heap(((Object(i), f), Value(IntVal(v)))::tl) -> printf "[loc=%d, field=`%s`, value=%d] \n" i f v; print_heap (Heap(tl)); ()
   | Heap(((Object(i), f), Value(LocationVal(v)))::tl) -> printf "[loc=%d, field=`%s`, value=null] \n" i f; print_heap (Heap(tl)); ()
+  | Heap(((Object(i), f), Value(ClosureVal(_)))::tl) -> printf "[loc=%d, field=`%s`, value=`closure`] \n" i f; print_heap (Heap(tl)); ()
 
 let rec get_new_location (h: heap) = match h with 
   | Heap([]) -> Object(0)
@@ -25,11 +26,19 @@ let rec get_new_location (h: heap) = match h with
                                      else Object(i + 1)
 
 
+let rec get_location_from_frame (name: string) (f: frame) = match f with
+  | Frame([]) -> Null
+  | Frame((n, l)::tl) -> if n = name then l  
+                         else get_location_from_frame name (Frame(tl))
+
 
 let rec get_location (name: string) (s: stack) = match s with
   | Stack([]) -> Null
-  | Stack(Frame([(n, l)])::tl) -> if n = name then l  
-                                  else get_location name (Stack(tl))
+  | Stack(fr::tl) -> let res = get_location_from_frame name fr
+                     in
+                     if res = Null 
+                     then get_location name (Stack(tl))
+                     else res 
 
 let create_frame name (l: location) = Frame([(name, l)])
 
@@ -45,10 +54,9 @@ let allocate_val_on_heap (l: location) (h: heap) = match h with
 
 let assign_val_on_heap (l: location) (res: tainted_value) (h: heap) = 
     match h, res with
-  | Heap(hp), Value(IntVal(i)) -> let hp' = List.remove_assoc (l, "val") hp
+  | Heap(hp), v -> let hp' = List.remove_assoc (l, "val") hp
                                   in 
-                                  Heap(((l, "val"), Value(IntVal(i)))::hp')
-
+                                  Heap(((l, "val"), v)::hp')
   | Heap(hp), _ -> Heap(((l, "val"), Value(LocationVal(Null)))::hp)
 
 
@@ -56,6 +64,26 @@ let get_val_from_heap (l: location) (f: string) (h: heap) = match h with
   | Heap(hp) -> if List.mem_assoc (l, f) hp
                 then List.assoc (l, f) hp 
                 else ValueError
+
+
+let rec linearize_stack_into_frame (s: stack) = match s with
+  | Stack([]) -> Frame([])
+  | Stack(Frame(f)::rest) ->let fr' = linearize_stack_into_frame(Stack(rest))
+                            in
+                            (
+                              match fr' with
+                              | Frame(f') -> Frame(f@f')
+                            )
+
+let consolidate_for_closure (fr: frame) 
+                            (st_closure: stack) 
+                            (st_program: stack) = 
+                            let st_closure' = add_frame fr st_closure
+                            in
+                            let fr_closure'' = linearize_stack_into_frame st_closure'
+                            in 
+                            add_frame fr_closure'' st_program
+
 
 type symbTable = (string * int) list ;;
 
