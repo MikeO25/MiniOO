@@ -15,11 +15,13 @@ during parsing, pretty print the abstract syntax tree, and check the
 correctness of your parser on MiniOO examples.
 
 TODO:
-- add procedures
 - add fields
 - add malloc
 - add AST pprint
+- clean stack feature
+- parallelism + atom 
 PROGRESS LOG:
+nov 26 - got recursive procedure working - 1 hr 30 min
 nov 24 - Added while loops and PLUS
 nov 16 - got if working, added printing for stack and heap - 1 hr 30 min
 nov 15 - got assign, sequence in eval_cmd working and minus, ident in eval_expr working  - 1 hr 40 min
