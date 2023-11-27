@@ -1,18 +1,15 @@
-# To Compile MiniOO
+COMPILE:
+To Compile MiniOO type
 `make`
-
-
-% make delete
-% script -q -r -k
-% make
-% ^D
-% make delete
-
-Current: fix ambiguous grammar for field with addition
-Next (2023-10-17): Write pprint AST / report
+To delete all the compiled output  files
+`make delete`
 
 TESTING:
 test.mini | xargs echo | ./minioo
+
+STATUS:
+Current - fix ambiguous grammar for field with addition
+Next -  Write pprint AST / report
 
 TODO:
 - fix y = x.@f + 1 being read as x.(@f + 1) 
