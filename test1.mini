@@ -1,0 +1,19 @@
+var first; 
+var second; 
+var n; var i; 
+var temp; 
+{first = 0; 
+	{second = 1; 
+		{n = 10; 
+			{i=0; 
+			 while i < n 
+				{i = i + 1; 
+				 	{temp = second; 
+				 		{second = first + second; 
+				 		first = temp}
+				 	}
+				}
+			}
+		}
+	}
+}

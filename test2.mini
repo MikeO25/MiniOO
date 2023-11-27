@@ -1,0 +1,19 @@
+var sum; 
+var acc; 
+{
+	sum = proc n: 
+	if 0 < n 
+	then {
+			acc = acc + n; 
+			{
+				n = n-1; 
+				sum(n)
+			}
+		 } 
+	else skip; 
+
+	{
+		acc = 0; 
+		sum(10)
+	}
+}

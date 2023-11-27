@@ -14,6 +14,9 @@ syntax tree (AST), produce the abstract syntax tree of full MiniOO
 during parsing, pretty print the abstract syntax tree, and check the 
 correctness of your parser on MiniOO examples.
 
+TESTING:
+test.mini | xargs echo | ./minioo
+
 TODO:
 - add fields
 - add malloc
