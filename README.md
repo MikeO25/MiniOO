@@ -1,11 +1,11 @@
 # Compile
 To Compile MiniOO type <br>
-`make`
+`make` <br>
 To delete all the compiled output  files <br>
-`make delete`
+`make delete` <br>
 
 # Testing
-test.mini | xargs echo | ./minioo
+`test.mini | xargs echo | ./minioo`
 
 # Status
 Current - fix ambiguous grammar for field with addition <br>
