@@ -36,6 +36,7 @@ and check_expr vs e = match e with
 	| Ident(v) -> if (List.mem v vs) 
 				  then true 
 				  else (Printf.printf "`%s` not declared in scope!\n" v; false)
+	
 	| Num(i) -> true 
 	
 	| Null -> true

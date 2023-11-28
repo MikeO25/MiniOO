@@ -16,7 +16,7 @@ Next -  Write pprint AST / report <br>
 - add AST pprint
 - clean stack feature
 - parallelism + atom 
-
+- add equals in bool for all types 
 # Progress log
 - nov 27 - wrote code for field/malloc - 2 hr
 - nov 26 - got recursive procedure working - 1 hr 30 min

@@ -76,8 +76,8 @@ and eval_cmd (c: conf) = match c with
       If(b, c1, c2)), s) -> let res = eval_bool b s in
                             (match res with
                               | Bool(is_true) -> if is_true
-                                             then eval_cmd (ControlAndState(Control(c1), s))
-                                             else eval_cmd (ControlAndState(Control(c2), s))
+                                                 then eval_cmd (ControlAndState(Control(c1), s))
+                                                 else eval_cmd (ControlAndState(Control(c2), s))
                               | BoolError -> ProgramError)
 
   
@@ -87,12 +87,9 @@ and eval_cmd (c: conf) = match c with
   (* Malloc *)
   | ControlAndState(
       Control(Malloc(name)), 
-      State(st, hp)) ->  let loc = get_location name st
-                         in
-                         let m_loc = get_new_location hp
-                         in 
-                         let hp' = assign_val_on_heap loc "val" (Value(LocationVal(m_loc))) hp
-                         in
+      State(st, hp)) ->  let loc = get_location name st in
+                         let m_loc = get_new_location hp in 
+                         let hp' = assign_val_on_heap loc "val" (Value(LocationVal(m_loc))) hp in
                          FinalState(State(st, hp'))
 
   (* Sequence *)
@@ -138,16 +135,11 @@ and eval_cmd (c: conf) = match c with
                        (match v1, v2 with
                           | Value(ClosureVal(Closure(name, c1, st'))), ValueError -> ProgramError
                           | Value(ClosureVal(Closure(name, c1, st'))), v2
-                            -> let loc = get_new_location hp 
-                               in
-                               let fr = create_frame name loc
-                               in
-                               let st'' = consolidate_for_closure fr st' st
-                               in
-                               let hp' = allocate_val_on_heap loc hp
-                               in
-                               let hp'' = assign_val_on_heap loc "val" v2 hp'
-                               in
+                            -> let loc = get_new_location hp in
+                               let fr = create_frame name loc in
+                               let st'' = consolidate_for_closure fr st' st in
+                               let hp' = allocate_val_on_heap loc hp in
+                               let hp'' = assign_val_on_heap loc "val" v2 hp' in
                                eval_cmd (ControlAndState(Block(c1), 
                                          State(st'', hp''))) 
                           | _, _  -> ProgramError
@@ -163,8 +155,7 @@ and eval_expr e s = match e, s with
                                   get_val_from_heap loc "val" hp
   
   | FieldExpression(e1, e2), State(st, hp) -> let v1 = eval_expr e1 s
-                                              and v2 = eval_expr e2 s
-                                              in
+                                              and v2 = eval_expr e2 s in
                                               (match v1, v2 with
                                                | Value(LocationVal(loc)), Value(FieldVal(f)) -> get_val_from_heap loc f hp
                                                | Value(LocationVal(loc)), ValueError -> print_endline "HELLO"; ValueError
@@ -184,18 +175,14 @@ and eval_expr e s = match e, s with
                        in 
                        (match v1, v2 with 
                        | Value(IntVal(i)), Value(IntVal(j)) -> Value(IntVal(i + j))
-                       | Value(FieldVal(i)), _ -> print_endline ":("; ValueError
+                       | Value(FieldVal(i)), _ -> print_endline "wrong"; ValueError
                        | _, _ -> ValueError)
   
   | ProcedureExpression(name, cmd), State(st, _) -> Value(ClosureVal(Closure(name, cmd, st)))
   
   | _,_ -> Value(IntVal(0))
 
-(* define function equality / less_than to check for errors
-with pattern matching
-  Error1, _ -> Error
-  _, Error2 -> Error
-*)
+
 and eval_bool b s = match b with
   | BoolValue(b1) -> Bool(b1)
   

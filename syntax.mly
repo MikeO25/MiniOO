@@ -20,17 +20,17 @@ open Data
 %type <unit> prog  
 
 %type <Ast.cmd> cmd
-%type <Ast.boolean> boolean
 %type <Ast.cmd> assign
 %type <Ast.cmd> declare
 %type <Ast.cmd> sequential_control
 %type <Ast.cmd> field_assignment
-%type <Ast.expr> expr
-%type <Ast.expr> field
 %type <Ast.cmd> recursive_procedure_call
 %type <Ast.cmd> parallelism
 %type <Ast.cmd> dynamic_object_allocation
-%left MINUS /* lowest precedence  */
+%type <Ast.boolean> boolean
+%type <Ast.expr> field
+%type <Ast.expr> expr
+%left MINUS PLUS /* lowest precedence  */
 
 %% /* rules */
 

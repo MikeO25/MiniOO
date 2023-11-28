@@ -17,7 +17,7 @@ let rec print_heap (h: heap) = match h with
   | Heap(((Object(i), f), Value(LocationVal(Null)))::tl) -> printf "[loc=%d, field=`%s`, value=null] \n" i f ; print_heap (Heap(tl)); ()
   | Heap(((Object(i), f), Value(LocationVal(Object(j))))::tl) -> printf "[loc=%d, field=`%s`, value=loc(%d)] \n" i f j; print_heap (Heap(tl)); ()
   | Heap(((Object(i), f), Value(ClosureVal(_)))::tl) -> printf "[loc=%d, field=`%s`, value=`closure`] \n" i f; print_heap (Heap(tl)); ()
-  | Heap(((Object(i), f), Value(FieldVal(fd)))::tl) -> printf "[loc=%d, field=`%s`, value=`%s`] \n" i f fd; print_heap (Heap(tl)); ()
+  | Heap(((Object(i), f), Value(FieldVal(fd)))::tl) -> printf "[loc=%d, field=`%s`, value=@%s] \n" i f fd; print_heap (Heap(tl)); ()
 
 let rec get_new_location (h: heap) = match h with 
   | Heap([]) -> Object(0)
@@ -57,8 +57,9 @@ let allocate_val_on_heap (l: location) (h: heap) = match h with
 let assign_val_on_heap (l: location) (f: string) (res: tainted_value) (h: heap) = 
     match h, res with
   | Heap(hp), v -> let hp' = List.remove_assoc (l, f) hp
-                                  in 
-                                  Heap(((l, f), v)::hp')
+                             in 
+                             Heap(((l, f), v)::hp')
+  
   | Heap(hp), _ -> Heap(((l, f), Value(LocationVal(Null)))::hp)
 
 
