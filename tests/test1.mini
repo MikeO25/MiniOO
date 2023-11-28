@@ -1,6 +1,7 @@
 var first; 
 var second; 
-var n; var i; 
+var n; 
+var i; 
 var temp; 
 {first = 0; 
 	{second = 1; 
