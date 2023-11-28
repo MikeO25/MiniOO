@@ -56,9 +56,8 @@ let allocate_val_on_heap (l: location) (h: heap) = match h with
 
 let assign_val_on_heap (l: location) (f: string) (res: tainted_value) (h: heap) = 
     match h, res with
-  | Heap(hp), v -> let hp' = List.remove_assoc (l, f) hp
-                             in 
-                             Heap(((l, f), v)::hp')
+  | Heap(hp), v -> let hp' = List.remove_assoc (l, f) hp in 
+                   Heap(((l, f), v)::hp')
   
   | Heap(hp), _ -> Heap(((l, f), Value(LocationVal(Null)))::hp)
 
@@ -72,15 +71,12 @@ let get_val_from_heap (l: location) (f: string) (h: heap) = match h with
 let rec linearize_stack_into_frame (s: stack) = match s with
   | Stack([]) -> Frame([])
   | Stack(Frame(f)::rest) ->let fr' = linearize_stack_into_frame(Stack(rest)) in
-                            (match fr' with
-                              | Frame(f') -> Frame(f@f'))
+                            (match fr' with Frame(f') -> Frame(f@f'))
 
 let consolidate_for_closure (fr: frame) 
                             (st_closure: stack) 
                             (st_program: stack) = 
-                            let st_closure' = add_frame fr st_closure
-                            in
-                            let fr_closure'' = linearize_stack_into_frame st_closure'
-                            in 
+                            let st_closure' = add_frame fr st_closure in
+                            let fr_closure'' = linearize_stack_into_frame st_closure' in 
                             add_frame fr_closure'' st_program
 
