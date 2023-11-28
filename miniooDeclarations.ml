@@ -71,12 +71,9 @@ let get_val_from_heap (l: location) (f: string) (h: heap) = match h with
 
 let rec linearize_stack_into_frame (s: stack) = match s with
   | Stack([]) -> Frame([])
-  | Stack(Frame(f)::rest) ->let fr' = linearize_stack_into_frame(Stack(rest))
-                            in
-                            (
-                              match fr' with
-                              | Frame(f') -> Frame(f@f')
-                            )
+  | Stack(Frame(f)::rest) ->let fr' = linearize_stack_into_frame(Stack(rest)) in
+                            (match fr' with
+                              | Frame(f') -> Frame(f@f'))
 
 let consolidate_for_closure (fr: frame) 
                             (st_closure: stack) 
