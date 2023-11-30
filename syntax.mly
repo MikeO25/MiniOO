@@ -10,10 +10,10 @@ open Data
 
 %} /* declarations */
 
-%token EOL SEMICOLON COLON ASSIGN  /* lexer tokens */
+%token EOL DOT SEMICOLON COLON ASSIGN  /* lexer tokens */
 %token EQUALS MINUS PLUS LBRACKET RBRACKET LPAREN RPAREN
 %token VAR WHILE PROC SKIP TRUE FALSE IF THEN ELSE LESS_THAN NULL MALLOC ATOM /* reserved words */
-%token DOT AT THREE_BARS
+%token AT THREE_BARS
 %token <string> IDENT
 %token <int> NUM
 %start prog                   /* the entry point */
@@ -31,6 +31,7 @@ open Data
 %type <Ast.expr> field
 %type <Ast.expr> expr
 %left MINUS PLUS /* lowest precedence  */
+%left DOT /* highest precedence  */
 
 %% /* rules */
 

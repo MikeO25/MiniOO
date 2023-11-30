@@ -17,6 +17,11 @@ Next -  Write pprint AST / report <br>
 - clean stack feature
 - parallelism + atom 
 - add equals in bool for all types 
+- add ast s - expr (expr (plus (expr (ident=x)) (expr)))
+- add variable + location when pushing on the stack
+- reverse a list
+- explain how to handle parallelism 
+
 # Progress log
 - nov 27 - wrote code for field/malloc - 2 hr
 - nov 26 - got recursive procedure working - 1 hr 30 min
