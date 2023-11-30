@@ -1,42 +1,31 @@
 all: delete
 	ls
 	@echo "#Abstract Syntax Tree:"
-	cat ast.ml
 	ocamlc -c ast.ml
 
 	@echo "#Static Checker:"
-	cat check.ml
 	ocamlc -c check.ml
 
 	@echo "#Semantic Domains:"
-	cat data.ml
 	ocamlc -c data.ml
 
 	@echo "# Type declarations:"
-	cat miniooDeclarations.ml
 	ocamlc -c miniooDeclarations.ml
 
 	@echo "#Operational semantics:"
-	cat eval.ml
 	ocamlc -c eval.ml
 
 	@echo "# Lexer specification:"
-	cat lexer.mll
 	ocamllex lexer.mll
-	ls
-	@echo "# Parser specification:"
-	cat syntax.mly
+
 	@echo "# Parser creation:"
 	menhir syntax.mly
-	ls
-	@echo "# types of values returned by lexems:"
-	cat Syntax.mli
+
 	@echo "# Compilation of the lexer and parser:"
 	ocamlc -c Syntax.mli
 	ocamlc -c lexer.ml
 	ocamlc -c Syntax.ml
-	@echo "# Specification of MiniOO"
-	cat minioo.ml 
+
 	@echo "# compilation of the MiniOO"
 	ocamlc -c minioo.ml
 	@echo "# linking of the lexer, parser & MiniOO"
