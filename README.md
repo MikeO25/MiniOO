@@ -21,7 +21,7 @@ Next -  Write pprint AST / report <br>
 - add variable + location when pushing on the stack
 - reverse a list
 - explain how to handle parallelism 
-
+- handle null + v / null - v etc.
 # Progress log
 - nov 27 - wrote code for field/malloc - 2 hr
 - nov 26 - got recursive procedure working - 1 hr 30 min
