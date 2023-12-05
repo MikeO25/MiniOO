@@ -1,6 +1,7 @@
 open Ast;;
 open Data;;
 open MiniooDeclarations;;
+open Printf
 
 (* pass in control and state *)
 (*let rec eval conf s = match c with 
@@ -35,7 +36,8 @@ and eval_cmd (c: conf) = match c with
   | ControlAndState(
       Control(
         Declare(name, c1)), 
-      State(st, hp)) ->  let loc = get_new_location hp in
+      State(st, hp)) ->  printf "* declare %s\n" name;
+                         let loc = get_new_location hp in
                          let fr = create_frame name loc in
                          let st' = add_frame fr st in
                          let hp' = allocate_val_on_heap loc hp in
@@ -49,13 +51,12 @@ and eval_cmd (c: conf) = match c with
       ),  
       State(st, hp)
 
-    ) -> let res = eval_expr e (State(st, hp))
-                        in 
-                        let loc = get_location name st
-                        in
-                        let hp' = assign_val_on_heap loc "val" res hp
-                        in
+    ) -> let res = eval_expr e (State(st, hp)) in
+         (match res with
+          | Value(v) -> let loc = get_location name st in
+                        let hp' = assign_val_on_heap loc "val" (Value(v)) hp in
                         FinalState(State(st, hp'))
+          | ValueError -> ProgramError)
 
     (* FieldAssign *)
   | ControlAndState(

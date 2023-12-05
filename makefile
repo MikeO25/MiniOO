@@ -79,67 +79,67 @@ all: delete
 	@echo "Test 15:"
 	@echo "var x; var y; {malloc(x); {malloc(y); {x.@a = 2; y.@b = x.@a + 1}}}" | ./minioo
 
-	@echo "Test 5:"
+	@echo "Test 16:"
 	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; z = 1}; y = z - 1}" | ./minioo
 
-	@echo "Test 3': (correct later)"
+	@echo "Test 17"
 	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; y = 1}; y = z - 1}" | ./minioo
 	
-	@echo "Test 4:"
+	@echo "Test 18:"
 	@echo "var x; var y; var z; z = 1 - y - z - x" | ./minioo
 	
-	@echo "Test 5:"
+	@echo "Test 19:"
 	@echo "{var z; skip; var z; z = 1 - z}" | ./minioo
 	
-	@echo "Test 6:"
+	@echo "Test 20:"
 	@echo "var a; a = proc y: y = y - 1" | ./minioo
 
-	@echo "Test 7:"
-	@echo "var x; {x = 1; {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
+	@echo "Test 21:"
+	@echo "var x; {x = 1; {if x == 1 then x = 2 else x = 3; x = 10}}" | ./minioo
 	
-	@echo "Test 8:"
-	@echo "{var x; x = 1; var y; y = null}" | ./minioo
+	@echo "Test 22:"
+	@echo "{var x; var y; {x=1; y=1}; skip}" | ./minioo
 
-	@echo "Test 9:"
+	@echo "Test 23:"
 	@echo "var a; {a = proc y: y = y - 1; a = 1}" | ./minioo
 
-	@echo "Test 10:"
-	@echo "var x; if true x = 1 else x = 3" | ./minioo
+	@echo "Test 24:"
+	@echo "var x; if true then x = 1 else x = 3" | ./minioo
 
-	@echo "Test 11:"
+	@echo "Test 25:"
 	@echo "var x; x.@p = 1" | ./minioo
 
-	@echo "Test 12:"
+	@echo "Test 26:"
 	@echo "var a; {a = proc y: y = y - 1; a(5)}" | ./minioo
 
-	@echo "Test 13:"
+	@echo "Test 27:"
 	@echo "1-1(1-1)" | ./minioo
 
-	@echo "Test 14:"
+	@echo "Test 28:"
 	@echo "var x; {x = 1 ||| {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
 
-	@echo "Test 15:"
+	@echo "Test 29:"
 	@echo "var x; {atom(x = 1) ||| {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
 
-	@echo "Test 16:"
+	@echo "Test 30:"
 	@echo "var x; malloc(x)" | ./minioo
 
-	@echo "Test 17:"
+	@echo "Test 31:"
 	@echo "var x; y = 1" | ./minioo
 
-	@echo "Test 18:"
+	@echo "Test 32:"
 	@echo "var x;{x = 1; var y; x = a - 1}" | ./minioo
 
-	@echo "Test 19:"
+	@echo "Test 33:"
 	@echo "var x; malloc(y)" | ./minioo
 
-	@echo "Test 20:"
+	@echo "Test 34:"
 	@echo "var x; {var a; a = 1; {x = 1; if x == 1 {x = 1; malloc(b)} else x = 3}}" | ./minioo
 
-	@echo "Test 21:"
+	@echo "Test 35:"
 	@echo "var a; {a = proc y: z = y - 1; a(5)}" | ./minioo
 
-	@echo "Test 22:"
+	@echo "Test 36:"
 	@echo "var p; {p = proc y:if y < 1 p = 1 else p(y - 1); p(1)}" | ./minioo
 	
 	@echo "# the end."
