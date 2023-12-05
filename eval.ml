@@ -129,7 +129,6 @@ and eval_expr e s =
       | Value (LocationVal loc), Value (FieldVal f) ->
           get_val_from_heap loc f hp
       | Value (LocationVal loc), ValueError ->
-          print_endline "HELLO";
           ValueError
       | _, _ -> ValueError)
   | Minus (e1, e2), s -> (
