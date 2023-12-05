@@ -2,7 +2,7 @@ open Ast;;
 
 type boolean = Bool of bool | BoolError
 
-and location = Object of int | Null
+and location = Object of int | NullLocation
 
 and closure = Closure of string * cmd * stack
 

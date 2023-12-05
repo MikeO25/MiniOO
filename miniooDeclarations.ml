@@ -5,7 +5,11 @@ open Printf;;
 let rec print_frame (fr: frame) = match fr with
   | Frame([]) -> ()
   | Frame((name, Object(i))::rest) -> printf "[name=`%s`, location=%d]\n" name i; print_frame (Frame(rest)); ()
-  | Frame((name, Null)::rest) -> printf "[name=`%s`, location=null]\n" name; print_frame (Frame(rest)) ; ()
+  | Frame((name, NullLocation)::rest) -> printf "[name=`%s`, location=null]\n" name; print_frame (Frame(rest)) ; ()
+
+let stack_is_empty (s: stack) = match s with
+  | Stack([]) -> true
+  | _ -> false
 
 let rec print_stack (s: stack) = match s with
   | Stack([]) -> ()
@@ -14,10 +18,11 @@ let rec print_stack (s: stack) = match s with
 let rec print_heap (h: heap) = match h with
   | Heap([]) -> ()
   | Heap(((Object(i), f), Value(IntVal(v)))::tl) -> printf "[loc=%d, field=`%s`, value=%d] \n" i f v; print_heap (Heap(tl)); ()
-  | Heap(((Object(i), f), Value(LocationVal(Null)))::tl) -> printf "[loc=%d, field=`%s`, value=null] \n" i f ; print_heap (Heap(tl)); ()
+  | Heap(((Object(i), f), Value(LocationVal(NullLocation)))::tl) -> printf "[loc=%d, field=`%s`, value=null] \n" i f ; print_heap (Heap(tl)); ()
   | Heap(((Object(i), f), Value(LocationVal(Object(j))))::tl) -> printf "[loc=%d, field=`%s`, value=loc(%d)] \n" i f j; print_heap (Heap(tl)); ()
   | Heap(((Object(i), f), Value(ClosureVal(_)))::tl) -> printf "[loc=%d, field=`%s`, value=`closure`] \n" i f; print_heap (Heap(tl)); ()
   | Heap(((Object(i), f), Value(FieldVal(fd)))::tl) -> printf "[loc=%d, field=`%s`, value=@%s] \n" i f fd; print_heap (Heap(tl)); ()
+  | Heap(((Object(i), f), Value(_))::tl) -> printf "[loc=%d, field=`%s`, value=hi] \n" i f; print_heap (Heap(tl)); ()
 
 let rec get_new_location (h: heap) = match h with 
   | Heap([]) -> Object(0)
@@ -29,16 +34,16 @@ let rec get_new_location (h: heap) = match h with
 
 
 let rec get_location_from_frame (name: string) (f: frame) = match f with
-  | Frame([]) -> Null
+  | Frame([]) -> NullLocation
   | Frame((n, l)::tl) -> if n = name then l  
                          else get_location_from_frame name (Frame(tl))
 
 
 let rec get_location (name: string) (s: stack) = match s with
-  | Stack([]) -> Null
+  | Stack([]) -> NullLocation
   | Stack(fr::tl) -> let res = get_location_from_frame name fr
                      in
-                     if res = Null 
+                     if res = NullLocation 
                      then get_location name (Stack(tl))
                      else res 
 
@@ -52,14 +57,14 @@ let add_frame (fr: frame) (s: stack) = match s with
    Create a value on the heap
 *)
 let allocate_val_on_heap (l: location) (h: heap) = match h with
-  | Heap(hp) -> Heap(((l, "val"), Value(LocationVal(Null)))::hp)
+  | Heap(hp) -> Heap(((l, "val"), Value(LocationVal(NullLocation)))::hp)
 
 let assign_val_on_heap (l: location) (f: string) (res: tainted_value) (h: heap) = 
     match h, res with
   | Heap(hp), v -> let hp' = List.remove_assoc (l, f) hp in 
                    Heap(((l, f), v)::hp')
   
-  | Heap(hp), _ -> Heap(((l, f), Value(LocationVal(Null)))::hp)
+  | Heap(hp), _ -> Heap(((l, f), Value(LocationVal(NullLocation)))::hp)
 
 
 let get_val_from_heap (l: location) (f: string) (h: heap) = match h with 
@@ -79,4 +84,5 @@ let consolidate_for_closure (fr: frame)
                             let st_closure' = add_frame fr st_closure in
                             let fr_closure'' = linearize_stack_into_frame st_closure' in 
                             add_frame fr_closure'' st_program
+
 

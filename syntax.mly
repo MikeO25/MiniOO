@@ -37,17 +37,21 @@ open Data
 
 prog :
     c=cmd EOL  {
-                if (check_cmd [] c) 
-                then print_endline "Static check Success!" 
-                else print_endline "Static check failed.";
-                let start_conf = ControlAndState(Control(c), State(Stack([]), Heap([])))
-                in
-                let final_res =  eval_cmd start_conf
-                in 
-                if eval_final final_res
-                then print_endline "Successfully Evaluated"
-                else print_endline "Evaluation Failed :(";
-                ()
+                print_endline "\n Ast";
+                print_endline "======";
+                print_endline "\nStatic Check";
+                print_endline "==============";
+                let static_check_result = (check_cmd [] c) in
+                if static_check_result 
+                then (print_endline "passed.\n";
+                      print_endline "Beginning execution";
+                      print_endline "===================";
+                      let start_conf = ControlAndState(Control(c), State(Stack([]), Heap([]))) in
+                      let final_res =  eval_cmd start_conf in 
+                      if eval_final final_res 
+                      then print_endline "\nFinished.\n"
+                      else print_endline "\nEvaluation Failed :(\n"; ())
+                else (print_endline "failed.\n"; ())
             }
 
 (* command *)

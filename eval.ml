@@ -7,9 +7,13 @@ open MiniooDeclarations;;
   | *)
 
 let rec eval_final (c: conf) = match c with 
-  | FinalState(State(s, h)) -> print_endline "Stack:";
-                               print_stack s; 
-                               print_endline "Heap:"; 
+  | FinalState(State(s, h)) -> print_endline "\nFinal Stack";
+                               print_endline "===========";
+                               if (stack_is_empty s)
+                               then print_endline "empty\n"
+                               else print_stack s;
+                               print_endline "Final Heap";
+                               print_endline "==========";
                                print_heap h; 
                                true 
   | ProgramError -> false
@@ -23,20 +27,20 @@ and eval_cmd (c: conf) = match c with
                                (match res with 
                                 | FinalState(
                                     State(Stack(top::rest), hp')) 
-                                    -> FinalState(State(Stack(rest), hp'))
+                                    -> print_endline "<= Popping frame off stack:";
+                                       print_frame top;
+                                       FinalState(State(Stack(rest), hp'))
                                 | ProgramError -> ProgramError)
   (* Declare *)
   | ControlAndState(
       Control(
         Declare(name, c1)), 
-      State(st, hp)) ->  let loc = get_new_location hp 
-                         in
-                         let fr = create_frame name loc
-                         in
-                         let st' = add_frame fr st
-                         in
-                         let hp' = allocate_val_on_heap loc hp
-                         in
+      State(st, hp)) ->  let loc = get_new_location hp in
+                         let fr = create_frame name loc in
+                         let st' = add_frame fr st in
+                         let hp' = allocate_val_on_heap loc hp in
+                         print_endline "=> Popping frame onto stack:";
+                         print_frame fr;
                          eval_cmd (ControlAndState(Block(c1), State(st', hp')))
   (* Assign *)
   | ControlAndState(
@@ -145,6 +149,10 @@ and eval_cmd (c: conf) = match c with
                           | _, _  -> ProgramError
                        )
 
+  (* Atom *)
+  | ControlAndState(
+    Control(Atom(c1)), s) -> eval_cmd (ControlAndState(Control(c1), s))
+
 and eval_expr e s = match e, s with
   | Num(i), _ -> Value(IntVal(i))
 
@@ -175,12 +183,10 @@ and eval_expr e s = match e, s with
                        in 
                        (match v1, v2 with 
                        | Value(IntVal(i)), Value(IntVal(j)) -> Value(IntVal(i + j))
-                       | Value(FieldVal(i)), _ -> print_endline "wrong"; ValueError
                        | _, _ -> ValueError)
   
   | ProcedureExpression(name, cmd), State(st, _) -> Value(ClosureVal(Closure(name, cmd, st)))
   
-  | _,_ -> Value(IntVal(0))
 
 
 and eval_bool b s = match b with
@@ -191,7 +197,11 @@ and eval_bool b s = match b with
                       in 
                       (match v1, v2 with 
                       | Value(IntVal(i)), Value(IntVal(j)) -> Bool(i = j)
+                      | Value(ClosureVal(i)), Value(ClosureVal(j)) -> Bool(i = j)
+                      | Value(LocationVal(i)), Value(LocationVal(j)) -> Bool(i = j)
+                      | Value(FieldVal(i)), Value(FieldVal(j)) -> Bool(i = j)
                       | _, _ -> BoolError)
+  
   | LessThan(e1, e2) -> let v1 = eval_expr e1 s
                         and v2 = eval_expr e2 s
                         in 

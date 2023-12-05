@@ -26,6 +26,19 @@ and cmd =
     | Assign of string * expr
     | FieldAssign of expr * expr * expr
 
+let rec print_cmd (c: cmd) (ts: int) = match c with 
+    | Skip -> ""
+    | Sequence(c1, c2) -> ""
+    | While(b, c1) -> ""
+    | If (b, c1, c2) -> ""
+    | Parallel(c1, c2) -> ""
+    | Atom(c1) -> ""
+    | Malloc(name) -> ""
+    | ProcedureCall(e1, e2) -> ""
+    | Declare(name, c1) -> ""
+    | Assign(name, e) -> ""
+    | FieldAssign(e1, e2, e3) -> ""
+
 
 
 
