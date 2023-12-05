@@ -79,6 +79,10 @@ all: delete
 	@echo "Test 15:"
 	@echo "var x; var y; {malloc(x); {malloc(y); {x.@a = 2; y.@b = x.@a + 1}}}" | ./minioo
 
+	@echo "Test 16: parallelism"
+	@echo "var x; {x=1 ||| x=2} | ./minioo"
+	@echo "var x; {x=1 ||| x=2}" | ./minioo
+
 	@echo "Test 16:"
 	@echo "{var x; {var y; {var z; z = x - 1; z = 1}; z = 1}; y = z - 1}" | ./minioo
 
@@ -143,6 +147,13 @@ all: delete
 	@echo "var p; {p = proc y:if y < 1 p = 1 else p(y - 1); p(1)}" | ./minioo
 	
 	@echo "# the end."
+
+test:
+	@echo "test 1: declare and assign (i)"
+	@echo "var x; x = 1" | ./minioo
+
+	@echo "test 2: declare and assign (ii)"
+	@echo "var x; var y; var z; x = 5" | ./minioo
 
 delete:
 	/bin/rm -f minioo *.cmi *.cmo lexer.cmi lexer.cmo lexer.ml syntax.cmi syntax.cmo syntax.ml syntax.mli syntax.conflicts makefile~

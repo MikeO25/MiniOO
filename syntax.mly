@@ -49,8 +49,8 @@ prog :
                       let start_conf = ControlAndState(Control(c), State(Stack([]), Heap([]))) in
                       let final_res =  eval_cmd start_conf in 
                       if eval_final final_res 
-                      then print_endline "\nFinished.\n"
-                      else print_endline "\nEvaluation Failed :(\n"; ())
+                      then print_endline "\nfinished.\n"
+                      else print_endline "\nevaluation failed.\n"; ())
                 else (print_endline "failed.\n"; ())
             }
 
