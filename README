@@ -1,0 +1,23 @@
+To compile:
+
+> make
+
+To run a simple program:
+
+> echo "var x; x=1" | ./minioo
+
+To run a file (Unix Only):
+> cat test.mini | xargs echo | ./minioo 
+
+To run a file (Unix and Linux)
+
+> file=test.mini;
+> echo "$(cat $file | tr -d '\n')" | ./minioo
+
+To run sample tests:
+
+> make test
+
+To clean:
+
+> make delete

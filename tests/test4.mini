@@ -15,12 +15,18 @@ var i;
 					 	}
 					};
 	{
-		n = 5;
+		n = 10;
 		{
 			i = 0;
 			{
 				malloc(ans);
-				fib(ans)
+				{
+					{
+						ans.@f = 0;
+						ans.@s = 1
+					};
+					fib(ans)
+				}
 			}
 		}
 	}
