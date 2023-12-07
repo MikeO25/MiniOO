@@ -1,0 +1,12 @@
+var i;
+var x;
+{
+	malloc(x);
+	{
+		i = 10;
+		{
+			x.@acc = 0;
+			while 0 < i {x.@acc = x.@acc + i; i = i - 1}
+		}
+	}
+}

@@ -120,10 +120,10 @@ all: delete
 	@echo "1-1(1-1)" | ./minioo
 
 	@echo "Test 28:"
-	@echo "var x; {x = 1 ||| {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
+	@echo "var x; {x = 1 ||| {if x == 1 then x = 2 else x = 3; x = 10}}" | ./minioo
 
 	@echo "Test 29:"
-	@echo "var x; {atom(x = 1) ||| {if x == 1 x = 2 else x = 3; x = 10}}" | ./minioo
+	@echo "var x; {atom(x = 1) ||| {if x == 1 then x = 2 else x = 3; x = 10}}" | ./minioo
 
 	@echo "Test 30:"
 	@echo "var x; malloc(x)" | ./minioo
@@ -138,24 +138,37 @@ all: delete
 	@echo "var x; malloc(y)" | ./minioo
 
 	@echo "Test 34:"
-	@echo "var x; {var a; a = 1; {x = 1; if x == 1 {x = 1; malloc(b)} else x = 3}}" | ./minioo
+	@echo "var x; {var a; a = 1; {x = 1; if x == 1 then {x = 1; malloc(b)} else x = 3}}" | ./minioo
 
 	@echo "Test 35:"
 	@echo "var a; {a = proc y: z = y - 1; a(5)}" | ./minioo
 
 	@echo "Test 36:"
-	@echo "var p; {p = proc y:if y < 1 p = 1 else p(y - 1); p(1)}" | ./minioo
+	@echo "var p; {p = proc y:if y < 1 then p = 1 else p(y - 1); p(1)}" | ./minioo
 	
 	@echo "# the end."
 
 test:
-	@echo "test 1: declare and assign (i)"
-	@echo "\necho 'var x; x = 1' | ./minioo"
+	@echo "test 1: declare and assign (i)\n"
+	@echo "echo 'var x; x = 1' | ./minioo"
 	@echo "var x; x = 1" | ./minioo
 
-	@echo "test 2: declare and assign (ii)"
-	@echo "\necho 'var x; var y; var z; x = 5' | ./minioo"
+	@echo "test 2: declare and assign (ii)\n"
+	@echo "echo 'var x; var y; var z; x = 5' | ./minioo"
 	@echo "var x; var y; var z; x = 5" | ./minioo
+
+	@echo "test 3: declare and assign (iii)\n"
+	@echo "echo '{var x; x = 1; var y; y = 2}' | ./minioo"
+	@echo "{var x; x = 1; var y; y = 2}" | ./minioo
+
+	@echo "test 4: simple field assign (i)"
+	@echo "var x; {malloc(x); x.@a = 2}" | ./minioo
+
+	@echo "test 5: simple field assign (ii)"
+	@echo "var x; var y; {malloc(x); {x.@a = 2; {y = @b; x.y = 3}}}" | ./minioo
+
+	@echo "test 6: simple field assign (iii)"
+	@echo "var x; var y; {malloc(x); {malloc(y); {x.@a = 2; y.@b = x.@a + 1}}}" | ./minioo
 
 delete:
 	/bin/rm -f minioo *.cmi *.cmo lexer.cmi lexer.cmo lexer.ml syntax.cmi syntax.cmo syntax.ml syntax.mli syntax.conflicts makefile~

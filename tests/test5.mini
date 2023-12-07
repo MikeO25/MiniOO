@@ -1,0 +1,10 @@
+var y;
+var incrementY;
+{
+	y = 1;
+	{
+		incrementY = proc i: y = y + i;
+		incrementY(10)
+	}
+
+}
