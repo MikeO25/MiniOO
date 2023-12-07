@@ -7,18 +7,18 @@ all: delete
 	ocamlc -c check.ml
 
 	@echo "#Semantic Domains:"
-	ocamlc -c data.ml
+	ocamlc -c domains.ml
 
-	@echo "# Type declarations:"
-	ocamlc -c miniooDeclarations.ml
+	@echo "#Helpers:"
+	ocamlc -c helpers.ml
 
-	@echo "#Operational semantics:"
+	@echo "#Operational Semantics:"
 	ocamlc -c eval.ml
 
-	@echo "# Lexer specification:"
+	@echo "# Lexer Specification:"
 	ocamllex lexer.mll
 
-	@echo "# Parser creation:"
+	@echo "# Parser Creation:"
 	menhir syntax.mly
 
 	@echo "# Compilation of the lexer and parser:"
@@ -29,7 +29,7 @@ all: delete
 	@echo "# compilation of the MiniOO"
 	ocamlc -c minioo.ml
 	@echo "# linking of the lexer, parser & MiniOO"
-	ocamlc -o minioo ast.cmo check.cmo data.cmo miniooDeclarations.cmo eval.cmo lexer.cmo Syntax.cmo minioo.cmo
+	ocamlc -o minioo ast.cmo check.cmo domains.cmo helpers.cmo eval.cmo lexer.cmo Syntax.cmo minioo.cmo
 	ls
 	
 	@echo "# using MiniOO"
@@ -150,9 +150,11 @@ all: delete
 
 test:
 	@echo "test 1: declare and assign (i)"
+	@echo "\necho 'var x; x = 1' | ./minioo"
 	@echo "var x; x = 1" | ./minioo
 
 	@echo "test 2: declare and assign (ii)"
+	@echo "\necho 'var x; var y; var z; x = 5' | ./minioo"
 	@echo "var x; var y; var z; x = 5" | ./minioo
 
 delete:

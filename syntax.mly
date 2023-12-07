@@ -5,7 +5,8 @@
 open Ast
 open Check
 open Eval
-open Data
+open Domains
+open Helpers
 
 
 %} /* declarations */
@@ -39,6 +40,7 @@ prog :
     c=cmd EOL  {
                 print_endline "\n Ast";
                 print_endline "======";
+                print_cmd c 0;
                 print_endline "\nStatic Check";
                 print_endline "==============";
                 let static_check_result = (check_cmd [] c) in
@@ -50,8 +52,8 @@ prog :
                       let final_res =  eval_cmd start_conf in 
                       if eval_final final_res 
                       then print_endline "\nfinished.\n"
-                      else print_endline "\nevaluation failed.\n"; ())
-                else (print_endline "failed.\n"; ())
+                      else (Printf.printf "\nevaluation failed. reason: %s\n\n" (get_error final_res); ()))
+                else (print_endline "\nfailed.\n"; ())
             }
 
 (* command *)

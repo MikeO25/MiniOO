@@ -1,6 +1,6 @@
 open Ast
 
-type boolean = Bool of bool | BoolError
+type boolean = Bool of bool | BoolError of string
 and location = Object of int | NullLocation
 and closure = Closure of string * cmd * stack
 
@@ -10,9 +10,7 @@ and value =
   | ClosureVal of closure
   | LocationVal of location
 
-and tainted_value = Value of value | ValueError
-and env = Env of (string * location) list
-and call = Call of (env * stack)
+and tainted_value = Value of value | ValueError of string
 and frame = Frame of (string * location) list
 and stack = Stack of frame list
 and heap = Heap of ((location * string) * tainted_value) list
@@ -22,4 +20,4 @@ and control = Control of cmd | Block of cmd
 and conf =
   | ControlAndState of (control * state)
   | FinalState of state
-  | ProgramError
+  | ProgramError of string
